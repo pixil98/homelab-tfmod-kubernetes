@@ -6,7 +6,7 @@ module "controller" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
   providers = {
     proxmox = proxmox
-   }
+  }
 
   count     = var.kubernetes_controller_count
   node      = "luke"
@@ -27,7 +27,7 @@ module "worker" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
   providers = {
     proxmox = proxmox
-   }
+  }
 
   count     = var.kubernetes_worker_count
   node      = "luke"
