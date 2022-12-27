@@ -15,7 +15,7 @@ module "controller" {
   vm_cpu_sockets     = 1
   vm_memory          = 4096
   vm_disk_size       = "10G"
-  vm_network_address = var.kubernetes_controller_ips[count]
+  vm_network_address = var.kubernetes_controller_ips[count.index]
   vm_user            = var.vm_user
   vm_user_publickey  = var.vm_user_publickey
   vm_user_privatekey = var.vm_user_privatekey
@@ -38,7 +38,8 @@ module "worker" {
   vm_cpu_sockets     = 1
   vm_memory          = 16384
   vm_disk_size       = "30G"
-  vm_network_address = var.kubernetes_worker_ips[count]
+  vm_network_address = var.kubernetes_worker_ips[count.index]
+  vm_user            = var.vm_user
   vm_user_publickey  = var.vm_user_publickey
   vm_user_privatekey = var.vm_user_privatekey
 
