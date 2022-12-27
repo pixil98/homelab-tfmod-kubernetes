@@ -4,42 +4,45 @@ resource "proxmox_pool" "namespace_pool" {
 
 module "controller" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
-  providers = {
-    proxmox = proxmox
-  }
 
   count     = var.kubernetes_controller_count
-  node      = "luke"
+  node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
   vm_name            = format("controller-%02d", count.index + 1)
-  vm_description     = format("controller-%02d", count.index + 1)
+  vm_description     = format("%s controller %d", var.namespace, count.index + 1)
   vm_cpu_cores       = 1
   vm_cpu_sockets     = 1
   vm_memory          = 4096
   vm_disk_size       = "10G"
-  vm_network_address = format("192.168.1.%d", 50 + count.index)
+  vm_network_address = var.kubernetes_controller_ips[count]
   vm_user            = var.vm_user
-  vm_user_pubkey     = var.vm_user_pubkey
+  vm_user_publickey  = var.vm_user_publickey
+  vm_user_privatekey = var.vm_user_privatekey
+
+  puppet_git_repo = var.puppet_git_repo
+  puppet_git_ref  = var.puppet_git_ref
+  puppet_role     = "kubernetes::controller"
 }
 
 module "worker" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
-  providers = {
-    proxmox = proxmox
-  }
 
   count     = var.kubernetes_worker_count
-  node      = "luke"
+  node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
   vm_name            = format("worker-%02d", count.index + 1)
-  vm_description     = format("worker-%02d", count.index + 1)
+  vm_description     = format("%s worker %d", var.namespace, count.index + 1)
   vm_cpu_cores       = 1
   vm_cpu_sockets     = 1
   vm_memory          = 16384
   vm_disk_size       = "30G"
-  vm_network_address = format("192.168.1.%d", 60 + count.index)
-  vm_user            = var.vm_user
-  vm_user_pubkey     = var.vm_user_pubkey
+  vm_network_address = var.kubernetes_worker_ips[count]
+  vm_user_publickey  = var.vm_user_publickey
+  vm_user_privatekey = var.vm_user_privatekey
+
+  puppet_git_repo = var.puppet_git_repo
+  puppet_git_ref  = var.puppet_git_ref
+  puppet_role     = "kubernetes::worker"
 }
