@@ -6,28 +6,23 @@ resource "rke_cluster" "cluster" {
   }
 
   dynamic "nodes" {
-    for_each = var.kubernetes_controller_ips
+    for_each = module.controllers
     content {
-      address = nodes.value
-      internal_address = nodes.value
+      address = nodes.value.ip_address
+      internal_address = nodes.value.ip_address
       user = var.vm_user
       role = ["controlplane", "etcd"]
       ssh_key = var.vm_user_privatekey
     }
   }
   dynamic "nodes" {
-    for_each = var.kubernetes_worker_ips
+    for_each = module.workers
     content {
-      address = nodes.value
-      internal_address = nodes.value
+      address = nodes.value.ip_address
+      internal_address = nodes.value.ip_address
       user = var.vm_user
       role = ["worker"]
       ssh_key = var.vm_user_privatekey
     }
   }
-
-  depends_on = [
-    module.controllers,
-    module.workers,
-  ]
 }
