@@ -21,6 +21,21 @@ provider "registry.terraform.io/hashicorp/null" {
   ]
 }
 
+provider "registry.terraform.io/rancher/rke" {
+  version     = "1.3.4"
+  constraints = "1.3.4"
+  hashes = [
+    "h1:nWzRpiGV6bJFwa5J5X5ytox5eU+nP5rCcDQZKy5zxNA=",
+    "zh:42f833a33db8deb4bafc6a62ab71628bfb9354c67d202eebe5cd5b50601dd188",
+    "zh:5e956363756d924dcec939ea8d75f24ad100a8cef2338f1749be2da9528a65d0",
+    "zh:92304df2964d70e8b10e708dc5d9229250e7516beb5a76ba3a84850aa7dd1e4f",
+    "zh:a0c32c313cfd5a1e7d263620cf18954e72a4b426a6fb24fdcd9d00e60e550ea5",
+    "zh:a35d711702094a8acf0cd2fd26703daa286c0b06b10a4256f29af0dd718d062a",
+    "zh:c757ce81c382f39dd2ddc5f51175ccd8a189fbd2822ac676365b6ab040e711be",
+    "zh:f82caf5ac58314fe0dba6a59e9af8c91e0729d3571125bf8f0eb01b3855558e6",
+  ]
+}
+
 provider "registry.terraform.io/telmate/proxmox" {
   version     = "2.9.11"
   constraints = "2.9.11"

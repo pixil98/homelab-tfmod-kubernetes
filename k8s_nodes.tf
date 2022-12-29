@@ -2,7 +2,7 @@ resource "proxmox_pool" "namespace_pool" {
   poolid = format("k8s.%s", var.namespace)
 }
 
-module "controller" {
+module "controllers" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
 
   count     = var.kubernetes_controller_count
@@ -25,7 +25,7 @@ module "controller" {
   puppet_role     = "kubernetes::controller"
 }
 
-module "worker" {
+module "workers" {
   source = "git@github.com:pixil98/homelab-tfmod-vm.git?ref=initial-dev"
 
   count     = var.kubernetes_worker_count
@@ -46,4 +46,25 @@ module "worker" {
   puppet_git_repo = var.puppet_git_repo
   puppet_git_ref  = var.puppet_git_ref
   puppet_role     = "kubernetes::worker"
+}
+
+resource "null_resource" "puppet" {
+  for_each = concat(module.controllers, module.workers)
+  triggers = {
+    user = var.vm_user
+  }
+
+  connection {
+    type        = "ssh"
+    user        = var.vm_user
+    private_key = var.vm_user_privatekey
+    host        = each.value.ip_address
+    port        = 22
+  }
+
+  provisioner "remote-exec" {
+    inline = [ 
+      "sudo usermod -a -G docker ${var.vm_user}"
+    ]
+  }
 }

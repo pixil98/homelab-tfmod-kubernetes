@@ -32,7 +32,6 @@ variable "vm_user_privatekey" {
   description = "Virtual machine user private key, only used to deploy kubernetes"
   type        = string
   sensitive   = true
-  default     = null
 }
 
 #---------------------------------------------------------------------------------------------------
