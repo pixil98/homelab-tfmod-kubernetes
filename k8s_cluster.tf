@@ -8,8 +8,8 @@ resource "rke_cluster" "cluster" {
   dynamic "nodes" {
     for_each = var.kubernetes_controller_ips
     content {
-      address = each.value
-      internal_address = each.value
+      address = nodes.value
+      internal_address = nodes.value
       user = var.vm_user
       role = ["controlplane", "etcd"]
       ssh_key = var.vm_user_privatekey
@@ -18,8 +18,8 @@ resource "rke_cluster" "cluster" {
   dynamic "nodes" {
     for_each = var.kubernetes_worker_ips
     content {
-      address = each.value
-      internal_address = each.value
+      address = nodes.value
+      internal_address = nodes.value
       user = var.vm_user
       role = ["worker"]
       ssh_key = var.vm_user_privatekey
