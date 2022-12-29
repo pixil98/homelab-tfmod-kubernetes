@@ -49,7 +49,7 @@ module "workers" {
 }
 
 resource "null_resource" "puppet" {
-  for_each = concat(module.controllers, module.workers)
+  for_each = toset(concat(module.controllers, module.workers))
   triggers = {
     user = var.vm_user
   }
