@@ -25,4 +25,9 @@ resource "rke_cluster" "cluster" {
       ssh_key = var.vm_user_privatekey
     }
   }
+
+  depends_on = [
+    module.controllers,
+    module.workers,
+  ]
 }
