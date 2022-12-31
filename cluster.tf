@@ -32,7 +32,7 @@ resource "rke_cluster" "cluster" {
   }
 }
 
-resource "local_file" "kubeconfig" {
+resource "local_sensitive_file" "kubeconfig" {
   filename = "${path.root}/kubeconfig"
-  sensitive_content  = "${rke_cluster.cluster.kube_config_yaml}"
+  content  = "${rke_cluster.cluster.kube_config_yaml}"
 }
