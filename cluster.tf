@@ -5,6 +5,11 @@ resource "rke_cluster" "cluster" {
     provider = "none"
   }
 
+  upgrade_strategy {
+      drain = true
+      max_unavailable_worker = "20%"
+  }
+
   dynamic "nodes" {
     for_each = module.controllers
     content {
@@ -25,4 +30,9 @@ resource "rke_cluster" "cluster" {
       ssh_key = var.vm_user_privatekey
     }
   }
+}
+
+resource "local_file" "kubeconfig" {
+  filename = "${path.root}/kubeconfig"
+  sensitive_content  = "${rke_cluster.cluster.kube_config_yaml}"
 }
