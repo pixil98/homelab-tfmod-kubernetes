@@ -34,6 +34,6 @@ resource "rke_cluster" "cluster" {
 
 resource "local_sensitive_file" "kubeconfig" {
   filename = "${path.root}/kubeconfig"
-  content  = "${rke_cluster.cluster.kube_config_yaml}"
+  content  = rke_cluster.cluster.kube_config_yaml
   file_permission = "600"
 }
