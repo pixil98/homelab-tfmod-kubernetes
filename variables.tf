@@ -19,7 +19,6 @@ variable "namespace" {
 variable "vm_user" {
   description = "Virtual machine username"
   type        = string
-  sensitive   = true
 }
 
 variable "vm_user_publickey" {
@@ -32,6 +31,12 @@ variable "vm_user_privatekey" {
   description = "Virtual machine user private key, only used to deploy kubernetes"
   type        = string
   sensitive   = true
+}
+
+variable "vm_mod_ref" {
+  description = "Terraform VM module ref to use when creating VMs."
+  type        = string
+  default     = "main"
 }
 
 #---------------------------------------------------------------------------------------------------
