@@ -38,6 +38,9 @@ jobs:
           # list of changed files within `super-linter`
           fetch-depth: 0
 
+      - name: Add Github Host Key
+        run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       ################################
       # Run Linter against code base #
       ################################
