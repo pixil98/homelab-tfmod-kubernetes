@@ -83,7 +83,7 @@ resource "kubernetes_secret" "main" {
 
 # GitHub
 data "github_repository" "main" {
-  name = var.flux_github_repo_name
+  name = "${var.flux_github_repo_owner}/${var.flux_github_repo_name}"
 }
 
 resource "github_branch" "branch" {
