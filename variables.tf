@@ -33,12 +33,6 @@ variable "vm_user_privatekey" {
   sensitive   = true
 }
 
-variable "vm_mod_ref" {
-  description = "Terraform VM module ref to use when creating VMs."
-  type        = string
-  default     = "main"
-}
-
 #---------------------------------------------------------------------------------------------------
 # Kubernetes
 #---------------------------------------------------------------------------------------------------
