@@ -1,10 +1,6 @@
 config {
-  format = "default"
-  plugin_dir = "~/.tflint.d/plugins"
-
-  module = true
+  module = false
   force = false
-  disabled_by_default = false
 }
 
 # Disabling this for now since the modules are still under active development
