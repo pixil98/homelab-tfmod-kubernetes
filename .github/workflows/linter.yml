@@ -38,9 +38,6 @@ jobs:
           # list of changed files within `super-linter`
           fetch-depth: 0
 
-      - name: Use Github HTTPS
-        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
-
       ################################
       # Run Linter against code base #
       ################################
@@ -50,3 +47,4 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_SETUP_GITHUB: true
