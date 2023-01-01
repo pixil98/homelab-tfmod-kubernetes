@@ -48,4 +48,4 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SSH_SETUP_GITHUB: true
-          SSH_KEY: ${{ secrets.SUPER_LINTER_DEPLOY_KEY }}
+          SSH_INSECURE_NO_VERIFY_GITHUB_KEY: true
