@@ -2,7 +2,10 @@ resource "rke_cluster" "cluster" {
   enable_cri_dockerd = true
 
   ingress {
-    provider = "none"
+    provider     = "none"
+    http_port    = 80 
+    https_port   = 443
+    network_mode = "hostPort"
   }
 
   upgrade_strategy {
