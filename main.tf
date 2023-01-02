@@ -35,3 +35,12 @@ terraform {
     }
   }
 }
+
+provider "kubernetes" {
+  config_path = "./kubeconfig"
+}
+
+provider "kubectl" {
+  config_path = "./kubeconfig"
+}
+
