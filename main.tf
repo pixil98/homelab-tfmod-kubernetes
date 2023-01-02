@@ -44,3 +44,7 @@ provider "kubectl" {
   config_path = "./kubeconfig"
 }
 
+provider "github" {
+  owner = var.flux_github_repo_owner
+  token = var.flux_github_token
+}
