@@ -37,11 +37,11 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path = "./kubeconfig"
+  config_path = local_sensitive_file.kubeconfig.filename
 }
 
 provider "kubectl" {
-  config_path = "./kubeconfig"
+  config_path = local_sensitive_file.kubeconfig.filename
 }
 
 provider "github" {
