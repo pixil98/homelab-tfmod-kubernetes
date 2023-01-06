@@ -25,23 +25,7 @@ terraform {
       source = "hashicorp/tls"
       version = "4.0.4"
     }
-    kubectl = {
-      source = "gavinbunney/kubectl"
-      version = "1.14.0"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-      version = "2.16.1"
-    }
   }
-}
-
-provider "kubernetes" {
-  config_path = local_sensitive_file.kubeconfig.filename
-}
-
-provider "kubectl" {
-  config_path = local_sensitive_file.kubeconfig.filename
 }
 
 provider "github" {

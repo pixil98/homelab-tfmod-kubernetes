@@ -16,6 +16,7 @@ data "flux_sync" "main" {
   branch      = var.flux_github_branch
 }
 
+/*
 # Kubernetes
 resource "kubernetes_namespace" "flux_system" {
   metadata {
@@ -27,39 +28,6 @@ resource "kubernetes_namespace" "flux_system" {
       metadata[0].labels,
     ]
   }
-}
-
-data "kubectl_file_documents" "install" {
-  content = data.flux_install.main.content
-}
-
-data "kubectl_file_documents" "sync" {
-  content = data.flux_sync.main.content
-}
-
-locals {
-  install = [for v in data.kubectl_file_documents.install.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-  sync = [for v in data.kubectl_file_documents.sync.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-}
-
-resource "kubectl_manifest" "install" {
-  for_each   = { for v in local.install : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  depends_on = [kubernetes_namespace.flux_system]
-  yaml_body  = each.value
-}
-
-resource "kubectl_manifest" "sync" {
-  for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  depends_on = [kubernetes_namespace.flux_system]
-  yaml_body  = each.value
 }
 
 resource "kubernetes_secret" "main" {
@@ -116,24 +84,5 @@ resource "github_repository_file" "kustomize" {
   content             = data.flux_sync.main.kustomize_content
   branch              = github_branch.branch.branch
   overwrite_on_create = true
-}
-
-# Create a secret for sealed secrets
-/*
-resource "kubernetes_secret" "sealed_secrets_key" {
-  metadata {
-    name      = "sealed-secrets-flux"
-    namespace = "kube-system"
-    labels    = {
-      "sealedsecrets.bitnami.com/sealed-secrets-key" = "active"
-    }
-  }
-
-  data = {
-    "tls.crt" = file(var.sealedsecrets_crt)
-    "tls.key" = file(var.sealedsecrets_key)
-  }
-
-  type = "kubernetes.io/tls"
 }
 */

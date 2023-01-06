@@ -1,5 +1,15 @@
+locals {
+  flux_yaml = <<-EOT
+  ${data.flux_install.main.content}
+  ---
+  ${data.flux_sync.main.content}
+  EOT
+}
+
 resource "rke_cluster" "cluster" {
   enable_cri_dockerd = true
+
+  addons = local.flux_yaml
 
   ingress {
     provider     = "none"
