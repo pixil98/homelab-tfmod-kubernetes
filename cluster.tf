@@ -1,6 +1,13 @@
+data "template_file" "flux_namesapce" {
+  template = "${file("${path.module}/namespace.tpl")}"
+  vars = {
+    namespace = "flux-system"
+  }
+}
+
 locals {
   flux_yaml = <<-EOT
-  ${file("${path.module}/yaml/flux-namespace.yaml")}
+  ${data.template_file.flux_namespace.rendered}
   ${data.flux_install.main.content}
   ${data.flux_sync.main.content}
   EOT
