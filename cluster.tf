@@ -1,10 +1,3 @@
-data "template_file" "flux_namespace" {
-  template = "${file("${path.module}/namespace.tpl")}"
-  vars = {
-    namespace = "flux-system"
-  }
-}
-
 locals {
   flux_yaml = <<-EOT
   ${templatefile("${path.module}/namespace.tftpl", { namespace = "flux-system" })}
