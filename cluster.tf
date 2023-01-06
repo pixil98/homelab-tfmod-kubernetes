@@ -1,7 +1,7 @@
 locals {
   flux_yaml = <<-EOT
+  ${file("${path.module}/yaml/flux-namespace.yaml")}
   ${data.flux_install.main.content}
-  ---
   ${data.flux_sync.main.content}
   EOT
 }
