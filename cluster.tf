@@ -1,4 +1,4 @@
-data "template_file" "flux_namesapce" {
+data "template_file" "flux_namespace" {
   template = "${file("${path.module}/namespace.tpl")}"
   vars = {
     namespace = "flux-system"
