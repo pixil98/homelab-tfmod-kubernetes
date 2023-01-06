@@ -7,7 +7,7 @@ data "template_file" "flux_namespace" {
 
 locals {
   flux_yaml = <<-EOT
-  ${data.template_file.flux_namespace.rendered}
+  ${templatefile("${path.module}/namespace.tftpl", { namespace = "flux-system" })}
   ${data.flux_install.main.content}
   ${data.flux_sync.main.content}
   EOT
