@@ -77,10 +77,16 @@ variable "puppet_git_ref" {
 #---------------------------------------------------------------------------------------------------
 # Flux
 #---------------------------------------------------------------------------------------------------
+variable "flux_enabled" {
+  description = "Whether or not flux should be configured"
+  type        = bool
+  default     = false
+}
+
 variable "flux_github_target_path" {
   description = "Path in Github repo to store Flux files"
   type        = string
-  default     = "flux"
+  default     = ""
 }
 
 variable "flux_github_repo_owner" {
@@ -98,10 +104,12 @@ variable "flux_github_repo_name" {
 variable "flux_github_branch" {
   description = "Github repository branch to use"
   type        = string
+  default     = null
 }
 
 variable "flux_github_token" {
   description = "Github token for repository"
   type        = string
   sensitive   = true
+  default     = null
 }

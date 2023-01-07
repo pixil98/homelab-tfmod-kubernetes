@@ -1,15 +1,7 @@
-locals {
-  flux_yaml = <<-EOT
-  ${templatefile("${path.module}/namespace.tftpl", { namespace = "flux-system" })}
-  ${data.flux_install.main.content}
-  ${data.flux_sync.main.content}
-  EOT
-}
-
 resource "rke_cluster" "cluster" {
   enable_cri_dockerd = true
 
-  addons = local.flux_yaml
+  addons = length(module.flux) > 0 ? module.flux[0].yaml : ""
 
   ingress {
     provider     = "none"
