@@ -3,6 +3,12 @@ resource "rke_cluster" "cluster" {
 
   addons = length(module.flux) > 0 ? module.flux[0].yaml : ""
 
+  private_registries {
+    url = "http://192.168.1.40:5000"
+    is_default = true
+  }
+
+
   ingress {
     provider     = "none"
     http_port    = 80 
