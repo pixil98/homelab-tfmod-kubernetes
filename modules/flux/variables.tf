@@ -16,7 +16,7 @@ variable "flux_github_repo_owner" {
 variable "flux_github_repo_name" {
   description = "Github repository name"
   type        = string
-  default     = "homelab-deployments"
+  default     = "homelab-deployments-flux"
 }
 
 variable "flux_github_branch" {
