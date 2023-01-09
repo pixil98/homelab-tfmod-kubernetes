@@ -86,7 +86,7 @@ variable "flux_enabled" {
 variable "flux_github_target_path" {
   description = "Path in Github repo to store Flux files"
   type        = string
-  default     = ""
+  default     = "flux"
 }
 
 variable "flux_github_repo_owner" {
