@@ -7,7 +7,7 @@ data "github_repository" "main" {
   full_name = "${var.flux_github_repo_owner}/${var.flux_github_repo_name}"
 }
 
-resource "github_branch" "branch" {
+data "github_branch" "branch" {
   repository = data.github_repository.main.name
   branch     = var.flux_github_branch
 }
