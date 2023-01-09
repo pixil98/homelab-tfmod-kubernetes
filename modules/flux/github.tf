@@ -31,7 +31,7 @@ resource "github_repository_file" "sync" {
   repository          = data.github_repository.main.name
   file                = data.flux_sync.main.path
   content             = data.flux_sync.main.content
-  branch              = data.github_branch.branch
+  branch              = data.github_branch.branch.branch
   overwrite_on_create = true
 }
 
