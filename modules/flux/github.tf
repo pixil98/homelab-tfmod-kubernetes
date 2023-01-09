@@ -4,7 +4,7 @@ resource "tls_private_key" "main" {
 }
 
 data "github_repository" "main" {
-  name = "${var.flux_github_repo_owner}/${var.flux_github_repo_name}"
+  full_name = "${var.flux_github_repo_owner}/${var.flux_github_repo_name}"
 }
 
 resource "github_branch" "branch" {
