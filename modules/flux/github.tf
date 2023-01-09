@@ -23,7 +23,7 @@ resource "github_repository_file" "install" {
   repository          = data.github_repository.main.name
   file                = data.flux_install.main.path
   content             = data.flux_install.main.content
-  branch              = github_branch.branch.branch
+  branch              = data.github_branch.branch.branch
   overwrite_on_create = true
 }
 
@@ -31,7 +31,7 @@ resource "github_repository_file" "sync" {
   repository          = data.github_repository.main.name
   file                = data.flux_sync.main.path
   content             = data.flux_sync.main.content
-  branch              = github_branch.branch.branch
+  branch              = data.github_branch.branch
   overwrite_on_create = true
 }
 
@@ -39,6 +39,6 @@ resource "github_repository_file" "kustomize" {
   repository          = data.github_repository.main.name
   file                = data.flux_sync.main.kustomize_path
   content             = data.flux_sync.main.kustomize_content
-  branch              = github_branch.branch.branch
+  branch              = data.github_branch.branch.branch
   overwrite_on_create = true
 }
