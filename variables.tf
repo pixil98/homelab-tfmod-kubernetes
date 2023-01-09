@@ -113,3 +113,20 @@ variable "flux_github_token" {
   sensitive   = true
   default     = null
 }
+
+#---------------------------------------------------------------------------------------------------
+# Sealed Secrets
+#---------------------------------------------------------------------------------------------------
+variable "sealed_secrets_key" {
+  description = "Sealed secrets tls key"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "sealed_secrets_crt" {
+  description = "Sealed Secrets tls public certificate"
+  type        = string
+  sensitive   = true
+  default     = null
+}

@@ -1,7 +1,17 @@
+locals {
+  addons = <<-EOT
+  ${length(module.flux) > 0 ? module.flux[0].yaml : ""}
+  ${length(var.sealed_secrets_key) > 0 ?  templatefile("${path.module}/sealed_secrets.tftpl", { 
+    key_base64 = base64encode(var.sealed_secrets_key)
+    crt_base64 = base64encode(var.sealed_secrets_crt)
+  }) : ""}
+  EOT
+}
+
 resource "rke_cluster" "cluster" {
   enable_cri_dockerd = true
 
-  addons = length(module.flux) > 0 ? module.flux[0].yaml : ""
+  addons = local.addons
 
   ingress {
     provider     = "none"
@@ -25,7 +35,7 @@ resource "rke_cluster" "cluster" {
       ssh_key = var.vm_user_privatekey
     }
   }
-  
+
   dynamic "nodes" {
     for_each = module.workers
     content {
