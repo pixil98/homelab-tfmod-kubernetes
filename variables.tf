@@ -1,7 +1,6 @@
 #---------------------------------------------------------------------------------------------------
 # General
 #---------------------------------------------------------------------------------------------------
-
 variable "nodes" {
   description = "Array of nodes to host the cluster"
   type        = list(string)
@@ -15,7 +14,6 @@ variable "namespace" {
 #---------------------------------------------------------------------------------------------------
 # Virtual Machines
 #---------------------------------------------------------------------------------------------------
-
 variable "vm_user" {
   description = "Virtual machine username"
   type        = string
@@ -36,22 +34,9 @@ variable "vm_user_privatekey" {
 #---------------------------------------------------------------------------------------------------
 # Kubernetes
 #---------------------------------------------------------------------------------------------------
-
-variable "kubernetes_controller_count" {
-  description = "The number of Kubernetes controllers to deploy"
-  type        = number
-  default     = 3
-}
-
 variable "kubernetes_controller_ips" {
   description = "IP addresses for controllers to use"
   type        = list(string)
-}
-
-variable "kubernetes_worker_count" {
-  description = "The number of Kubernetes workers to deploy"
-  type        = number
-  default     = 5
 }
 
 variable "kubernetes_worker_ips" {

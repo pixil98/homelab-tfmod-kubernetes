@@ -5,7 +5,7 @@ resource "proxmox_pool" "namespace_pool" {
 module "controllers" {
   source = "github.com/pixil98/homelab-tfmod-vm.git?ref=main"
 
-  count     = var.kubernetes_controller_count
+  count     = length(var.kubernetes_controller_ips)
   node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
@@ -28,7 +28,7 @@ module "controllers" {
 module "workers" {
   source = "github.com/pixil98/homelab-tfmod-vm.git?ref=main"
 
-  count     = var.kubernetes_worker_count
+  count     = length(var.kubernetes_worker_ips)
   node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
