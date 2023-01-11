@@ -17,7 +17,6 @@ module "controllers" {
   vm_disk_size       = "10G"
   vm_network_address = var.kubernetes_controller_ips[count.index]
   vm_user            = var.vm_user
-  vm_user_publickey  = var.vm_user_publickey
   vm_user_privatekey = var.vm_user_privatekey
 
   puppet_git_repo = var.puppet_git_repo
@@ -40,7 +39,6 @@ module "workers" {
   vm_disk_size       = "30G"
   vm_network_address = var.kubernetes_worker_ips[count.index]
   vm_user            = var.vm_user
-  vm_user_publickey  = var.vm_user_publickey
   vm_user_privatekey = var.vm_user_privatekey
 
   puppet_git_repo = var.puppet_git_repo
