@@ -6,5 +6,4 @@ module "flux" {
   flux_github_repo_owner  = var.flux_github_repo_owner
   flux_github_repo_name   = var.flux_github_repo_name
   flux_github_branch      = var.flux_github_branch
-  flux_github_token       = var.flux_github_token
 }

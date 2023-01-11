@@ -23,9 +23,3 @@ variable "flux_github_branch" {
   description = "Github repository branch to use"
   type        = string
 }
-
-variable "flux_github_token" {
-  description = "Github token for repository"
-  type        = string
-  sensitive   = true
-}
