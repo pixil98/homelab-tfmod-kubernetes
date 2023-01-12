@@ -33,8 +33,8 @@ module "workers" {
 
   vm_name            = format("worker-%02d", count.index + 1)
   vm_description     = format("%s worker %d", var.namespace, count.index + 1)
-  vm_cpu_cores       = 1
-  vm_cpu_sockets     = 1
+  vm_cpu_cores       = 4
+  vm_cpu_sockets     = 2
   vm_memory          = 16384
   vm_disk_size       = "30G"
   vm_network_address = var.kubernetes_worker_ips[count.index]
