@@ -3,7 +3,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "Telmate/proxmox"
-      version = "2.9.11"
+      version = "2.9.13"
     }
     rke = {
       source = "rancher/rke"
@@ -11,11 +11,11 @@ terraform {
     }
     local = {
       source = "hashicorp/local"
-      version = "2.2.3"
+      version = "2.3.0"
     }
     github = {
       source = "integrations/github"
-      version = "5.13.0"
+      version = "5.17.0"
     }
   }
 }
