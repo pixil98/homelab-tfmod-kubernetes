@@ -9,7 +9,8 @@ locals {
 }
 
 resource "rke_cluster" "cluster" {
-  enable_cri_dockerd = true
+  enable_cri_dockerd    = true
+  ignore_docker_version = true
 
   addons = local.addons
 
