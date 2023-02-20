@@ -1,5 +1,5 @@
 data "flux_install" "main" {
-  target_path = var.flux_github_target_path
+  target_path    = var.flux_github_target_path
   network_policy = false
 }
 
