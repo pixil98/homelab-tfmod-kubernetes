@@ -1,6 +1,13 @@
 locals {
   flux_yaml = <<-EOT
-  ${templatefile("${path.module}/namespace.tftpl", { namespace = "flux-system" })}
+  ${templatefile("${path.module}/namespace.tftpl", { namespace = data.flux_sync.main.namespace })}
+  ${templatefile("${path.module}/secret.tftpl", {
+    name                = data.flux_sync.main.secret
+    namespace           = data.flux_sync.main.namespace
+    identity_base64     = tls_private_key.main.private_key_pem
+    identity_pub_base64 = tls_private_key.main.public_key_pem
+    knownhosts_base64   = local.known_hosts
+  })}
   ${data.flux_install.main.content}
   ${data.flux_sync.main.content}
   EOT
