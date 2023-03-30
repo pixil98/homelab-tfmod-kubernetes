@@ -14,6 +14,11 @@ resource "rke_cluster" "cluster" {
 
   addons = local.addons
 
+  private_registries {
+    url        = "registry.lab.reisman.org/proxy.docker.io"
+    is_default = true
+  }
+
   ingress {
     provider     = "none"
     http_port    = 80
