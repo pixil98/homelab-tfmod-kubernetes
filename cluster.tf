@@ -1,7 +1,7 @@
 locals {
   addons = <<-EOT
   ${length(module.flux) > 0 ? module.flux[0].yaml : ""}
-  ${length(var.sealed_secrets_key) > 0 ? templatefile("${path.module}/sealed_secrets.tftpl", {
+  ${var.sealed_secrets_key != null ? templatefile("${path.module}/sealed_secrets.tftpl", {
     key_base64 = base64encode(var.sealed_secrets_key)
     crt_base64 = base64encode(var.sealed_secrets_crt)
   }) : ""}
