@@ -3,19 +3,19 @@ terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "2.9.13"
+      version = "2.9.14"
     }
     rke = {
       source  = "rancher/rke"
-      version = "1.3.4"
+      version = "1.4.1"
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.3.0"
+      version = "2.4.0"
     }
     github = {
       source  = "integrations/github"
-      version = "5.17.0"
+      version = "5.18.3"
     }
   }
 }
