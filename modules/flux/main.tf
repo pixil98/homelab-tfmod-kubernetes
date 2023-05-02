@@ -3,11 +3,11 @@ terraform {
   required_providers {
     flux = {
       source  = "fluxcd/flux"
-      version = "0.25.3"
+      version = "1.0.0-rc.1"
     }
     github = {
       source  = "integrations/github"
-      version = "5.18.3"
+      version = "5.23.0"
     }
     tls = {
       source  = "hashicorp/tls"
