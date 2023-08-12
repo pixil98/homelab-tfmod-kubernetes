@@ -9,8 +9,9 @@ module "controllers" {
   node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
-  vm_name            = format("controller-%02d", count.index + 1)
+  vm_name            = format("%s-controller-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s controller %d", var.namespace, count.index + 1)
+  vm_disk_class      = var.vm_disk_class
   vm_cpu_cores       = 1
   vm_cpu_sockets     = 1
   vm_memory          = 4096
@@ -31,8 +32,9 @@ module "workers" {
   node      = var.nodes[count.index % length(var.nodes)]
   namespace = proxmox_pool.namespace_pool.poolid
 
-  vm_name            = format("worker-%02d", count.index + 1)
+  vm_name            = format("%s-worker-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s worker %d", var.namespace, count.index + 1)
+  vm_disk_class      = var.vm_disk_class
   vm_cpu_cores       = 4
   vm_cpu_sockets     = 2
   vm_memory          = 16384
