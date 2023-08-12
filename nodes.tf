@@ -11,6 +11,7 @@ module "controllers" {
 
   vm_name            = format("%s-controller-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s controller %d", var.namespace, count.index + 1)
+  vm_disk_class      = var.vm_disk_class
   vm_cpu_cores       = 1
   vm_cpu_sockets     = 1
   vm_memory          = 4096
@@ -33,6 +34,7 @@ module "workers" {
 
   vm_name            = format("%s-worker-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s worker %d", var.namespace, count.index + 1)
+  vm_disk_class      = var.vm_disk_class
   vm_cpu_cores       = 4
   vm_cpu_sockets     = 2
   vm_memory          = 16384

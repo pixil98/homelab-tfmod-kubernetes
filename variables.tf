@@ -25,6 +25,11 @@ variable "vm_user_privatekey" {
   sensitive   = true
 }
 
+variable "vm_disk_class" {
+  description = "Virtual machine disk classification"
+  type        = string
+}
+
 #---------------------------------------------------------------------------------------------------
 # Kubernetes
 #---------------------------------------------------------------------------------------------------
