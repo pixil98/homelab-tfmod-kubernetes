@@ -38,9 +38,57 @@ variable "kubernetes_controller_ips" {
   type        = list(string)
 }
 
+variable "kubernetes_controller_cpu_cores" {
+  description = "Number of cpu cores to allocate per controller"
+  type        = number
+  default     = 1
+}
+
+variable "kubernetes_controller_cpu_sockets" {
+  description = "Number of cpu sockets to allocate per controller"
+  type        = number
+  default     = 1
+}
+
+variable "kubernetes_controller_memory" {
+  description = "Amount of memory in megabytes to allocate per controller"
+  type        = number
+  default     = 4096
+}
+
+variable "kubernetes_controller_disk_size" {
+  description = "Size of disk to allocate per controller"
+  type        = string
+  default     = "10G"
+}
+
 variable "kubernetes_worker_ips" {
   description = "IP addresses for workers to use"
   type        = list(string)
+}
+
+variable "kubernetes_worker_cpu_cores" {
+  description = "Number of cpu cores to allocate per worker"
+  type        = number
+  default     = 4
+}
+
+variable "kubernetes_worker_cpu_sockets" {
+  description = "Number of cpu sockets to allocate per worker"
+  type        = number
+  default     = 2
+}
+
+variable "kubernetes_worker_memory" {
+  description = "Amount of memory in megabytes to allocate per worker"
+  type        = number
+  default     = 16384
+}
+
+variable "kubernetes_worker_disk_size" {
+  description = "Size of disk to allocate per worker"
+  type        = string
+  default     = "30G"
 }
 
 #---------------------------------------------------------------------------------------------------
