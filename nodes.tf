@@ -1,5 +1,5 @@
-resource "proxmox_pool" "namespace_pool" {
-  poolid = format("k8s.%s", var.namespace)
+resource "proxmox_virtual_environment_pool" "namespace_pool" {
+  pool_id = format("k8s.%s", var.namespace)
 }
 
 module "controllers" {
@@ -7,7 +7,7 @@ module "controllers" {
 
   count     = length(var.kubernetes_controller_ips)
   node      = var.nodes[count.index % length(var.nodes)]
-  namespace = proxmox_pool.namespace_pool.poolid
+  namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
 
   vm_name            = format("%s-controller-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s controller %d", var.namespace, count.index + 1)
@@ -30,7 +30,7 @@ module "workers" {
 
   count     = length(var.kubernetes_worker_ips)
   node      = var.nodes[count.index % length(var.nodes)]
-  namespace = proxmox_pool.namespace_pool.poolid
+  namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
 
   vm_name            = format("%s-worker-%02d", var.namespace, count.index + 1)
   vm_description     = format("%s worker %d", var.namespace, count.index + 1)

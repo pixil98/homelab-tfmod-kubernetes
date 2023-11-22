@@ -2,8 +2,8 @@ terraform {
   required_version = ">= 1.3.6"
   required_providers {
     proxmox = {
-      source  = "loeken/proxmox"
-      version = "2.9.16"
+      source = "bpg/proxmox"
+      version = "0.38.1"
     }
     rke = {
       source  = "rancher/rke"

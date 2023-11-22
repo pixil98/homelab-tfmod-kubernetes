@@ -57,9 +57,9 @@ variable "kubernetes_controller_memory" {
 }
 
 variable "kubernetes_controller_disk_size" {
-  description = "Size of disk to allocate per controller"
+  description = "Size of disk in gigabytes to allocate per controller"
   type        = string
-  default     = "10G"
+  default     = 10
 }
 
 variable "kubernetes_worker_ips" {
@@ -86,9 +86,9 @@ variable "kubernetes_worker_memory" {
 }
 
 variable "kubernetes_worker_disk_size" {
-  description = "Size of disk to allocate per worker"
-  type        = string
-  default     = "30G"
+  description = "Size of disk in gigabytes to allocate per worker"
+  type        = number
+  default     = 30
 }
 
 #---------------------------------------------------------------------------------------------------
