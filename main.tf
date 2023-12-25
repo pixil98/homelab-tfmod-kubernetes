@@ -3,15 +3,15 @@ terraform {
   required_providers {
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.38.1"
+      version = "0.42.0"
     }
     rke = {
       source  = "rancher/rke"
-      version = "1.4.2"
+      version = "1.4.3"
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.4.0"
+      version = "2.4.1"
     }
     github = {
       source  = "integrations/github"
