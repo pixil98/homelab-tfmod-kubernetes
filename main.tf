@@ -7,7 +7,7 @@ terraform {
     }
     rke = {
       source  = "rancher/rke"
-      version = "1.4.3"
+      version = "1.4.2"
     }
     local = {
       source  = "hashicorp/local"
