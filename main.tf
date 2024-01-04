@@ -32,8 +32,9 @@ provider "flux" {
     cluster_ca_certificate = rke_cluster.cluster.ca_crt
   }
   git = {
-    url = "ssh://git@github.com/${var.flux_github_repo_owner}/${var.flux_github_repo_name}.git"
-    ssh = {
+    url    = "ssh://git@github.com/${var.flux_github_repo_owner}/${var.flux_github_repo_name}.git"
+    branch = var.flux_github_branch
+    ssh    = {
       username    = "git"
       private_key = var.vm_user_privatekey
     }
