@@ -26,7 +26,7 @@ terraform {
 
 provider "flux" {
   kubernetes = {
-    host                   = rke_cluster.cluster.control_plane_hosts[0].address
+    host                   = rke_cluster.cluster.api_server_url
     client_certificate     = rke_cluster.cluster.client_cert
     client_key             = rke_cluster.cluster.client_key
     cluster_ca_certificate = rke_cluster.cluster.ca_crt
