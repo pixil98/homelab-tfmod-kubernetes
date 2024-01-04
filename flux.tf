@@ -5,7 +5,7 @@ resource "tls_private_key" "flux" {
 
 resource "github_repository_deploy_key" "flux" {
   title      = "flux - ${var.flux_github_branch}"
-  repository = "${var.flux_github_repo_owner}/${var.flux_github_repo_name}"
+  repository = ${var.flux_github_repo_name}
   key        = tls_private_key.flux.public_key_openssh
   read_only  = true
 }
