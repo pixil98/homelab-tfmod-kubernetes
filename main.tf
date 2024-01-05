@@ -49,3 +49,9 @@ provider "github" {
   owner = var.flux_github_repo_owner
   token = var.flux_github_token
 }
+
+provider "proxmox" {
+  endpoint = var.proxmox_endpoint
+  username = var.proxmox_user
+  password = var.proxmox_password
+}

@@ -12,6 +12,27 @@ variable "namespace" {
 }
 
 #---------------------------------------------------------------------------------------------------
+# Proxmox
+#---------------------------------------------------------------------------------------------------
+
+variable "proxmox_endpoint" {
+  description = "Proxmox endpoint"
+  type        = string
+}
+
+variable "proxmox_user" {
+  description = "Proxmox username"
+  type        = string
+  sensitive   = true
+}
+
+variable "proxmox_password" {
+  description = "Proxmox password"
+  type        = string
+  sensitive   = true
+}
+
+#---------------------------------------------------------------------------------------------------
 # Virtual Machines
 #---------------------------------------------------------------------------------------------------
 variable "vm_user" {
