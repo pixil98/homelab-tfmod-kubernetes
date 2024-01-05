@@ -7,7 +7,7 @@ terraform {
     }
     github = {
       source  = "integrations/github"
-      version = "5.42.0"
+      version = "5.43.0"
     }
     local = {
       source  = "hashicorp/local"
@@ -15,7 +15,7 @@ terraform {
     }
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.42.0"
+      version = "0.43.0"
     }
     rke = {
       source  = "rancher/rke"
