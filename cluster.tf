@@ -1,17 +1,6 @@
-locals {
-  addons = <<-EOT
-  ${var.sealed_secrets_key != null ? templatefile("${path.module}/sealed_secrets.tftpl", {
-    key_base64 = base64encode(var.sealed_secrets_key)
-    crt_base64 = base64encode(var.sealed_secrets_crt)
-  }) : ""}
-  EOT
-}
-
 resource "rke_cluster" "cluster" {
   enable_cri_dockerd    = true
   ignore_docker_version = true
-
-  addons = local.addons
 
   private_registries {
     url        = "registry.lab.reisman.org/proxy.docker.io"

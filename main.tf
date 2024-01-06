@@ -9,6 +9,10 @@ terraform {
       source  = "integrations/github"
       version = "5.43.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.25.1"
+    }
     local = {
       source  = "hashicorp/local"
       version = "2.4.1"
@@ -48,6 +52,13 @@ provider "flux" {
 provider "github" {
   owner = var.flux_github_repo_owner
   token = var.flux_github_token
+}
+
+provider "kubernetes" {
+  host                   = rke_cluster.cluster.api_server_url
+  client_certificate     = rke_cluster.cluster.client_cert
+  client_key             = rke_cluster.cluster.client_key
+  cluster_ca_certificate = rke_cluster.cluster.ca_crt
 }
 
 provider "proxmox" {
