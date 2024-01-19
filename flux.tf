@@ -35,3 +35,7 @@ resource "kubernetes_config_map" "flux_values" {
 
   data = jsondecode(data.jq_query.flux_values[0].result)
 }
+
+output "flux_values" {
+  value = jsondecode(data.jq_query.flux_values[0].result)
+}
