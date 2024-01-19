@@ -33,5 +33,5 @@ resource "kubernetes_config_map" "flux_values" {
     namespace = "flux-system"
   }
 
-  data = jsondecode(data.jq_query.flux_values.result)
+  data = jsondecode(data.jq_query.flux_values[0].result)
 }
