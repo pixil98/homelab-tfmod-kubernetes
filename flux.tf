@@ -26,12 +26,12 @@ data "jq_query" "flux_values" {
   query = "[paths(scalars|true) as $p | {([$p[]] | join(\".\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
 }
 
-resource "kubernetes_config_map" "example" {
+resource "kubernetes_config_map" "flux_values" {
   count  = var.flux_enabled ? 1 : 0
   metadata {
     name      = "flux-values"
     namespace = "flux-system"
   }
 
-  data = jsondecode(data.jq_query.values.result)
+  data = jsondecode(data.jq_query.flux_values.result)
 }
