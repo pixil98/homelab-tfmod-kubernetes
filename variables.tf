@@ -167,6 +167,12 @@ variable "flux_github_token" {
   default     = null
 }
 
+variable "flux_values_json" {
+  description = "An object where the path to each value will be mapped to the key of a config map and loaded into the cluster"
+  type        = object({})
+  default     = null
+}
+
 #---------------------------------------------------------------------------------------------------
 # Sealed Secrets
 #---------------------------------------------------------------------------------------------------
