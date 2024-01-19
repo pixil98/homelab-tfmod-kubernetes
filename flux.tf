@@ -18,3 +18,20 @@ resource "flux_bootstrap_git" "flux" {
 
   path = var.flux_github_target_path
 }
+
+# Flux values configmap
+data "jq_query" "flux_values" {
+  count  = var.flux_enabled ? 1 : 0
+  data = jsonencode(var.flux_values_json)
+  query = "[paths(scalars|true) as $p | {([$p[]] | join(\".\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
+}
+
+resource "kubernetes_config_map" "example" {
+  count  = var.flux_enabled ? 1 : 0
+  metadata {
+    name      = "flux-values"
+    namespace = "flux-system"
+  }
+
+  data = jsondecode(data.jq_query.values.result)
+}

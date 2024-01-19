@@ -9,9 +9,13 @@ terraform {
       source  = "integrations/github"
       version = "5.43.0"
     }
+    jq = {
+      source = "massdriver-cloud/jq"
+      version = "0.2.1"
+    }
     kubernetes = {
       source = "hashicorp/kubernetes"
-      version = "2.25.1"
+      version = "2.25.2"
     }
     local = {
       source  = "hashicorp/local"
