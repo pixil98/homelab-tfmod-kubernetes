@@ -30,8 +30,27 @@ resource "kubernetes_config_map" "flux_values" {
   count  = var.flux_enabled ? 1 : 0
   metadata {
     name      = "flux-values"
-    namespace = "flux-system"
+    namespace = flux_bootstrap_git.flux[0].namespace
   }
 
   data = jsondecode(data.jq_query.flux_values[0].result)
+}
+
+resource "kubernetes_manifest" "test-configmap" {
+  count  = (var.flux_enabled && var.flux_core_repository_name) ? 1 : 0
+  manifest = {
+    "apiVersion" = "source.toolkit.fluxcd.io/v1"
+    "kind"       = "GitRepository"
+    "metadata" = {
+      "name"      = "homelab-core"
+      "namespace" = flux_bootstrap_git.flux[0].namespace
+    }
+    "spec" = {
+      interval = "5m"
+      url      = var.flux_core_repository_name
+      ref      = {
+        branch = var.flux_core_repository_branch
+      }
+    }
+  }
 }

@@ -173,6 +173,18 @@ variable "flux_values_json" {
   default     = null
 }
 
+variable "flux_core_repository_name" {
+  description = "Core flux repository repository"
+  type        = string
+  default     = null  
+}
+
+variable "flux_core_repository_branch" {
+  description = "Core repository branch"
+  type        = string
+  default     = "main"
+}
+
 #---------------------------------------------------------------------------------------------------
 # Sealed Secrets
 #---------------------------------------------------------------------------------------------------
