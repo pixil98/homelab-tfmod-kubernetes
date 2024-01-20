@@ -37,7 +37,7 @@ resource "kubernetes_config_map" "flux_values" {
 }
 
 resource "kubernetes_manifest" "test-configmap" {
-  count  = (var.flux_enabled && var.flux_core_repository_name) ? 1 : 0
+  count  = (var.flux_enabled && var.flux_core_repository_name != null) ? 1 : 0
   manifest = {
     "apiVersion" = "source.toolkit.fluxcd.io/v1"
     "kind"       = "GitRepository"
