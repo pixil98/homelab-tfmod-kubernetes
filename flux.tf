@@ -36,8 +36,8 @@ resource "kubernetes_config_map" "flux_values" {
   data = jsondecode(data.jq_query.flux_values[0].result)
 }
 
-resource "kubernetes_manifest" "test-configmap" {
-  count  = (var.flux_enabled && var.flux_core_repository_name != null) ? 1 : 0
+resource "kubernetes_manifest" "flux_core_gitrepo" {
+  count  = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
   manifest = {
     "apiVersion" = "source.toolkit.fluxcd.io/v1"
     "kind"       = "GitRepository"
@@ -47,7 +47,7 @@ resource "kubernetes_manifest" "test-configmap" {
     }
     "spec" = {
       interval = "5m"
-      url      = var.flux_core_repository_name
+      url      = var.flux_core_repository
       ref      = {
         branch = var.flux_core_repository_branch
       }

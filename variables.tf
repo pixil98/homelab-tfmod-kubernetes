@@ -173,7 +173,7 @@ variable "flux_values_json" {
   default     = null
 }
 
-variable "flux_core_repository_name" {
+variable "flux_core_repository" {
   description = "Core flux repository repository"
   type        = string
   default     = null  
