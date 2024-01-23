@@ -42,7 +42,7 @@ resource "kubernetes_manifest" "flux_core_gitrepo" {
     "apiVersion" = "source.toolkit.fluxcd.io/v1"
     "kind"       = "GitRepository"
     "metadata" = {
-      "name"      = "homelab-core"
+      "name"      = "flux-core"
       "namespace" = flux_bootstrap_git.flux[0].namespace
     }
     "spec" = {
@@ -51,6 +51,28 @@ resource "kubernetes_manifest" "flux_core_gitrepo" {
       ref      = {
         branch = var.flux_core_repository_branch
       }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "flux_core_kustomization" {
+  count  = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
+  manifest = {
+    "apiVersion" = "kustomize.toolkit.fluxcd.io/v1"
+    "kind"       = "Kustomization"
+    "metadata" = {
+      "name"      = "flux-core"
+      "namespace" = flux_bootstrap_git.flux[0].namespace
+    }
+    "spec" = {
+      interval  = "10m"
+      sourceRef = {
+        kind = "GitRepository"
+        name = "flux-core"
+      }
+      path      =  "./"
+      prune     = true
+      timeout   = "5m"
     }
   }
 }
