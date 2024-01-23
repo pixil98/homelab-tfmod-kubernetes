@@ -23,7 +23,7 @@ resource "flux_bootstrap_git" "flux" {
 data "jq_query" "flux_values" {
   count  = var.flux_enabled ? 1 : 0
   data = jsonencode(var.flux_values_json)
-  query = "[paths(scalars|true) as $p | {([$p[]] | join(\".\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
+  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
 }
 
 resource "kubernetes_config_map" "flux_values" {
