@@ -179,10 +179,16 @@ variable "flux_core_repository" {
   default     = null  
 }
 
-variable "flux_core_repository_branch" {
+variable "flux_core_branch" {
   description = "Core repository branch"
   type        = string
   default     = "main"
+}
+
+variable "flux_core_path" {
+  description = "Path in core repository to load"
+  type        = string
+  default     = "./bootstrap"
 }
 
 #---------------------------------------------------------------------------------------------------

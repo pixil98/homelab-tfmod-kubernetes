@@ -49,7 +49,7 @@ resource "kubernetes_manifest" "flux_core_gitrepo" {
       interval = "5m"
       url      = var.flux_core_repository
       ref      = {
-        branch = var.flux_core_repository_branch
+        branch = var.flux_core_branch
       }
     }
   }
@@ -70,7 +70,7 @@ resource "kubernetes_manifest" "flux_core_kustomization" {
         kind = "GitRepository"
         name = "flux-core"
       }
-      path      =  "./"
+      path      =  var.flux_core_path
       prune     = true
       timeout   = "5m"
     }
