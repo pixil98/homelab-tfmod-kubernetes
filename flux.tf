@@ -22,7 +22,7 @@ resource "flux_bootstrap_git" "flux" {
 # Flux values configmap
 data "jq_query" "flux_values" {
   count  = var.flux_enabled ? 1 : 0
-  data = jsonencode(var.flux_values_json)
+  data = var.flux_values_json
   query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
 }
 

@@ -168,8 +168,8 @@ variable "flux_github_token" {
 }
 
 variable "flux_values_json" {
-  description = "An object where the path to each value will be mapped to the key of a config map and loaded into the cluster"
-  type        = map(any)
+  description = "A JSON string of values to load into the cluster for flux to use"
+  type        = string
   default     = null
 }
 
