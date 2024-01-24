@@ -13,6 +13,10 @@ terraform {
       source = "massdriver-cloud/jq"
       version = "0.2.1"
     }
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
     kubernetes = {
       source = "hashicorp/kubernetes"
       version = "2.25.2"
@@ -56,6 +60,14 @@ provider "flux" {
 provider "github" {
   owner = var.flux_github_repo_owner
   token = var.flux_github_token
+}
+
+provider "kubectl" {
+  host                   = rke_cluster.cluster.api_server_url
+  client_certificate     = rke_cluster.cluster.client_cert
+  client_key             = rke_cluster.cluster.client_key
+  cluster_ca_certificate = rke_cluster.cluster.ca_crt
+  load_config_file       = false
 }
 
 provider "kubernetes" {

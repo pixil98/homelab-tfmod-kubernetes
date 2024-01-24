@@ -28,7 +28,6 @@ data "jq_query" "flux_values" {
 
 resource "kubernetes_config_map" "flux_values" {
   count = var.flux_enabled ? 1 : 0
-  depends_on = [rke_cluster.cluster]
   metadata {
     name      = "flux-values"
     namespace = flux_bootstrap_git.flux[0].namespace
@@ -37,45 +36,33 @@ resource "kubernetes_config_map" "flux_values" {
   data = jsondecode(data.jq_query.flux_values[0].result)
 }
 
-resource "kubernetes_manifest" "flux_core_gitrepo" {
+resource "kubectl_manifest" "flux_core_gitrepository" {
   count    = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
-  depends_on = [rke_cluster.cluster]
-  manifest = {
-    "apiVersion" = "source.toolkit.fluxcd.io/v1"
-    "kind"       = "GitRepository"
-    "metadata"   = {
-      "name"      = "flux-core"
-      "namespace" = flux_bootstrap_git.flux[0].namespace
-    }
-    "spec"       = {
-      interval = "5m"
-      url      = var.flux_core_repository
-      ref      = {
-        branch = var.flux_core_branch
-      }
-    }
-  }
+  yaml_body = templatefile(
+    "${path.module}/flux_gitrepository.tftpl",
+    {
+      name      = "flux-core"
+      namespace = flux_bootstrap_git.flux[0].namespace
+      interval  = "5m"
+      url       = var.flux_core_repository
+      branch    = var.flux_core_branch
+    })
 }
 
-resource "kubernetes_manifest" "flux_core_kustomization" {
+resource "kubectl_manifest" "flux_core_kustomization" {
   count    = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
-  depends_on = [rke_cluster.cluster]
-  manifest = {
-    "apiVersion" = "kustomize.toolkit.fluxcd.io/v1"
-    "kind"       = "Kustomization"
-    "metadata"   = {
-      "name"      = "flux-core"
-      "namespace" = flux_bootstrap_git.flux[0].namespace
-    }
-    "spec"       = {
+  yaml_body = templatefile(
+    "${path.module}/flux_kustomization.tftpl",
+    {
+      name      = "flux-core"
+      namespace = flux_bootstrap_git.flux[0].namespace
       interval  = "10m"
-      sourceRef = {
+      source = {
         kind = "GitRepository"
         name = "flux-core"
       }
-      path      =  var.flux_core_path
+      path      = var.flux_core_path
       prune     = true
       timeout   = "5m"
-    }
-  }
+    })
 }
