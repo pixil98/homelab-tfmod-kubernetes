@@ -43,10 +43,6 @@ data "jq_query" "flux_secrets" {
   query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"secrets_\" + .)"
 }
 
-locals {
-  generated_secrets = keys()
-}
-
 resource "random_password" "generated_secrets" {
   for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == "<generated>" }
   length  = 30
