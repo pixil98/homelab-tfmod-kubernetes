@@ -26,6 +26,10 @@ data "jq_query" "flux_values" {
   query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
 }
 
+locals {
+  values = formatlist("vals_%s", jq_query.flux_values[0].result)
+}
+
 resource "kubernetes_config_map" "flux_values" {
   count = var.flux_enabled ? 1 : 0
   metadata {
@@ -33,7 +37,24 @@ resource "kubernetes_config_map" "flux_values" {
     namespace = flux_bootstrap_git.flux[0].namespace
   }
 
-  data = jsondecode(data.jq_query.flux_values[0].result)
+  data = jsondecode(local.values)
+}
+
+# Flux secrets configmap
+data "jq_query" "flux_secrets" {
+  count = var.flux_enabled ? 1 : 0
+  data  = var.flux_secrets_json
+  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
+}
+
+resource "kubernetes_config_map" "flux_secrets" {
+  count = var.flux_enabled ? 1 : 0
+  metadata {
+    name      = "flux-secrets"
+    namespace = flux_bootstrap_git.flux[0].namespace
+  }
+
+  data = jsondecode(data.jq_query.flux_secrets[0].result)
 }
 
 resource "kubectl_manifest" "flux_core_gitrepository" {
