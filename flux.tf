@@ -27,7 +27,7 @@ data "jq_query" "flux_values" {
 }
 
 locals {
-  values = formatlist("vals_%s", jq_query.flux_values[0].result)
+  values = formatlist("vals_%s", data.jq_query.flux_values[0].result)
 }
 
 resource "kubernetes_config_map" "flux_values" {
