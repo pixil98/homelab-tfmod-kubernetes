@@ -60,7 +60,7 @@ resource "kubernetes_secret" "flux_secrets" {
     namespace = flux_bootstrap_git.flux[0].namespace
   }
   
-  data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => (v == local.GENERATED_SECRET_STRING ? random_password.generated_secrets[k] : v) }
+  data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => (v == local.GENERATED_SECRET_STRING ? random_password.generated_secrets[k].result : v) }
 }
 
 resource "kubectl_manifest" "flux_core_gitrepository" {
