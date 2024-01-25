@@ -43,13 +43,13 @@ data "jq_query" "flux_secrets" {
   query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"secrets_\" + .)"
 }
 
-resource "kubernetes_config_map" "flux_secrets" {
+resource "kubernetes_secret" "flux_secrets" {
   count = var.flux_enabled ? 1 : 0
   metadata {
     name      = "flux-secrets"
     namespace = flux_bootstrap_git.flux[0].namespace
   }
-
+  
   data = jsondecode(data.jq_query.flux_secrets[0].result)
 }
 

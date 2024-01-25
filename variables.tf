@@ -188,12 +188,12 @@ variable "flux_core_path" {
 variable "flux_values_json" {
   description = "A JSON string of values to load into the cluster for flux to use"
   type        = string
-  default     = null
+  default     = "{}"
 }
 
 variable "flux_secrets_json" {
   description = "A JSON string of secret values to load into the cluster for flux to use"
   type        = string
-  default     = null
+  default     = "{}"
   sensitive   = true
 }
