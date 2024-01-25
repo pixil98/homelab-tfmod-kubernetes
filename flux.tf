@@ -1,3 +1,7 @@
+locals {
+  GENERATED_SECRET_STRING = "<generated>"
+}
+
 resource "tls_private_key" "flux" {
   count       = var.flux_enabled ? 1 : 0
   algorithm   = "ECDSA"
@@ -44,7 +48,7 @@ data "jq_query" "flux_secrets" {
 }
 
 resource "random_password" "generated_secrets" {
-  for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == "<generated>" }
+  for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == local.GENERATED_SECRET_STRING }
   length  = 30
   special = true
 }
@@ -56,7 +60,7 @@ resource "kubernetes_secret" "flux_secrets" {
     namespace = flux_bootstrap_git.flux[0].namespace
   }
   
-  data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v }
+  data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => (v == local.GENERATED_SECRET_STRING ? random_password.generated_secrets[k] : v) }
 }
 
 resource "kubectl_manifest" "flux_core_gitrepository" {
