@@ -23,11 +23,7 @@ resource "flux_bootstrap_git" "flux" {
 data "jq_query" "flux_values" {
   count = var.flux_enabled ? 1 : 0
   data  = var.flux_values_json
-  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
-}
-
-locals {
-  values = formatlist("vals_%s", data.jq_query.flux_values[0].result)
+  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"vals_\" + .)"
 }
 
 resource "kubernetes_config_map" "flux_values" {
@@ -37,14 +33,14 @@ resource "kubernetes_config_map" "flux_values" {
     namespace = flux_bootstrap_git.flux[0].namespace
   }
 
-  data = jsondecode(local.values)
+  data = jsondecode(data.jq_query.flux_values[0].result)
 }
 
 # Flux secrets configmap
 data "jq_query" "flux_secrets" {
   count = var.flux_enabled ? 1 : 0
   data  = var.flux_secrets_json
-  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item)"
+  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"secrets_\" + .)"
 }
 
 resource "kubernetes_config_map" "flux_secrets" {
