@@ -49,7 +49,7 @@ data "jq_query" "flux_secrets" {
 
 resource "random_password" "generated_secrets" {
   for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == local.GENERATED_SECRET_STRING }
-  length  = 30
+  length  = 50
   special = true
 }
 
@@ -70,7 +70,7 @@ resource "kubectl_manifest" "flux_core_gitrepository" {
     {
       name      = "flux-core"
       namespace = flux_bootstrap_git.flux[0].namespace
-      interval  = "5m"
+      interval  = "1m"
       url       = var.flux_core_repository
       branch    = var.flux_core_branch
     })
@@ -83,7 +83,7 @@ resource "kubectl_manifest" "flux_core_kustomization" {
     {
       name      = "flux-core"
       namespace = flux_bootstrap_git.flux[0].namespace
-      interval  = "10m"
+      interval  = "5m"
       source = {
         kind = "GitRepository"
         name = "flux-core"

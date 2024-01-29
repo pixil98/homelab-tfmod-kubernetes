@@ -29,6 +29,10 @@ terraform {
       source = "bpg/proxmox"
       version = "0.43.0"
     }
+    random = {
+      source = "hashicorp/random"
+      version = "3.6.0"
+    }
     rke = {
       source  = "rancher/rke"
       version = "1.4.3"
