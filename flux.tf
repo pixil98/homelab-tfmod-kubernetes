@@ -50,7 +50,7 @@ data "jq_query" "flux_secrets" {
 resource "random_password" "generated_secrets" {
   for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == local.GENERATED_SECRET_STRING }
   length  = 50
-  special = true
+  special = false
 }
 
 resource "kubernetes_secret" "flux_secrets" {
