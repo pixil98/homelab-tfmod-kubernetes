@@ -3,11 +3,11 @@ terraform {
   required_providers {
     flux = {
       source = "fluxcd/flux"
-      version = "1.2.2"
+      version = "1.3.0"
     }
     github = {
       source  = "integrations/github"
-      version = "5.43.0"
+      version = "6.2.1"
     }
     jq = {
       source = "massdriver-cloud/jq"
@@ -19,23 +19,23 @@ terraform {
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
-      version = "2.25.2"
+      version = "2.30.0"
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.4.1"
+      version = "2.5.1"
     }
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.43.0"
+      version = "0.58.1"
     }
     random = {
       source = "hashicorp/random"
-      version = "3.6.0"
+      version = "3.6.2"
     }
     rke = {
       source  = "rancher/rke"
-      version = "1.4.3"
+      version = "1.5.0"
     }
     tls = {
       source = "hashicorp/tls"
