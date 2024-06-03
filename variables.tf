@@ -167,19 +167,33 @@ variable "flux_github_token" {
   default     = null
 }
 
-#---------------------------------------------------------------------------------------------------
-# Sealed Secrets
-#---------------------------------------------------------------------------------------------------
-variable "sealed_secrets_key" {
-  description = "Sealed secrets tls key"
+variable "flux_core_repository" {
+  description = "Core flux repository repository"
   type        = string
-  sensitive   = true
-  default     = null
+  default     = null  
 }
 
-variable "sealed_secrets_crt" {
-  description = "Sealed Secrets tls public certificate"
+variable "flux_core_branch" {
+  description = "Core repository branch"
   type        = string
+  default     = "main"
+}
+
+variable "flux_core_path" {
+  description = "Path in core repository to load"
+  type        = string
+  default     = "./bootstrap"
+}
+
+variable "flux_values_json" {
+  description = "A JSON string of values to load into the cluster for flux to use"
+  type        = string
+  default     = "{}"
+}
+
+variable "flux_secrets_json" {
+  description = "A JSON string of secret values to load into the cluster for flux to use"
+  type        = string
+  default     = "{}"
   sensitive   = true
-  default     = null
 }
