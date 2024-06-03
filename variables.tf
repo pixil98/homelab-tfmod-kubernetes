@@ -170,7 +170,7 @@ variable "flux_github_token" {
 variable "flux_core_repository" {
   description = "Core flux repository repository"
   type        = string
-  default     = null  
+  default     = "https://github.com/pixil98/homelab-flux-core.git"  
 }
 
 variable "flux_core_branch" {
