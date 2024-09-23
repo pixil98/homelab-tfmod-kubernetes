@@ -7,7 +7,7 @@ terraform {
     }
     github = {
       source  = "integrations/github"
-      version = "6.2.1"
+      version = "6.3.0"
     }
     jq = {
       source = "massdriver-cloud/jq"
@@ -19,19 +19,19 @@ terraform {
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
-      version = "2.30.0"
+      version = "2.32.0"
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.5.1"
+      version = "2.5.2"
     }
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.58.1"
+      version = "0.65.0"
     }
     random = {
       source = "hashicorp/random"
-      version = "3.6.2"
+      version = "3.6.3"
     }
     rke = {
       source  = "rancher/rke"
@@ -39,7 +39,7 @@ terraform {
     }
     tls = {
       source = "hashicorp/tls"
-      version = "4.0.5"
+      version = "4.0.6"
     }
   }
 }
