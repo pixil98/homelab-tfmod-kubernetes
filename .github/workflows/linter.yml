@@ -14,6 +14,8 @@ on:
   pull_request:
     branches: [master, main]
 
+permissions: read-all
+
 ###############
 # Set the Job #
 ###############
@@ -42,7 +44,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: github/super-linter@v4
+        uses: github/super-linter@v7
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
