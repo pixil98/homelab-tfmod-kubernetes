@@ -27,7 +27,7 @@ terraform {
     }
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.66.2"
+      version = "0.66.3"
     }
     random = {
       source = "hashicorp/random"
