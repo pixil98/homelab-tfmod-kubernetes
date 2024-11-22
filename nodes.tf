@@ -3,7 +3,7 @@ resource "proxmox_virtual_environment_pool" "namespace_pool" {
 }
 
 module "controllers" {
-  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=25fba3b9c9e2e7ab15038b721b2e14234edf69c1"
+  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=9defad43f4c593d7f04ed9626254f34872664cb2"
 
   count     = length(var.kubernetes_controller_ips)
   node      = var.nodes[count.index % length(var.nodes)]
@@ -26,7 +26,7 @@ module "controllers" {
 }
 
 module "workers" {
-  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=25fba3b9c9e2e7ab15038b721b2e14234edf69c1"
+  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=9defad43f4c593d7f04ed9626254f34872664cb2"
 
   count     = length(var.kubernetes_worker_ips)
   node      = var.nodes[count.index % length(var.nodes)]
