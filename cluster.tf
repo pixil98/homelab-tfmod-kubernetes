@@ -29,7 +29,7 @@ resource "rke_cluster" "cluster" {
       ssh_key          = var.vm_user_privatekey
 
       labels = {
-        physical_host = nodes.value.physical_host
+        "homelab.local/vm-host" = nodes.value.physical_host
       }
     }
   }
@@ -42,8 +42,9 @@ resource "rke_cluster" "cluster" {
       user             = var.vm_user
       role             = ["worker"]
       ssh_key          = var.vm_user_privatekey
+
       labels = {
-        physical_host = nodes.value.physical_host
+        "homelab.local/vm-host" = nodes.value.physical_host
       }
     }
   }
