@@ -289,22 +289,22 @@ provider "registry.terraform.io/massdriver-cloud/jq" {
 }
 
 provider "registry.terraform.io/rancher/rke" {
-  version     = "1.7.0"
-  constraints = "1.7.0"
+  version     = "1.7.5"
+  constraints = "1.7.5"
   hashes = [
-    "h1:6vxFVRw05roeVy8mfDp+Y1+WHFM3tdmWJZC5eFcjHK0=",
-    "h1:6zTxjdsy0dSxbuIsaphz8cYMJnNTnWyUmyJnbahTyUE=",
-    "h1:8BrbldmUc5rPgt0VlDI3e0l1yeBvRJrlLuMYJITvupk=",
-    "h1:LvfqkJNwhaieA4gTvan/9iIw8wFsqsFDT4xS4mNIynU=",
-    "h1:M/VB/feN/ewMMuSW9jnictGZgFfUtQXzfz6JmPEOimk=",
-    "h1:jQsPCarKUplJB8WqpKOuekEjzDpFRJe4bI+4tNDUcg8=",
-    "h1:uIgaWkOKzMHbxlTwBD89zEs2zliWuibSu4xFWF5YECo=",
-    "zh:4bbde2e0afc13d60586f383b6706456fb2834fd4670e5581bfe5746527f29d0c",
-    "zh:4da0795c927ad65e5ddbc4a8cbdcd3a8a032132261394ed1635cdc3e0737925c",
-    "zh:5161dc7ec219490b0bfa4466e8f00a7560d507c36a1e73d47b488ea752a968bd",
-    "zh:93de7bd543eb1f095f221a88d6e4b1c15e0a169239c461c597b9736e95f07730",
-    "zh:cb3ae141cf2b8b90fbe43aa5ea490efe0617f4092d950b19fef10fd0a1f8d587",
-    "zh:e34fe5cc0b06f958775add40c8515e8d6e5fbf4f6379af5f0fabe664596e9bc2",
-    "zh:f90394e99659ac5147ca3680eab4baf06547a4dd015977625dbc2fb7c2d3e2c0",
+    "h1:Xiu0h6KW7w3vceMLCsXBshUQUFxR+xuv40HHvsQ7jb8=",
+    "h1:Ym9/3okoIqfdXPb7NZrVBapumgzXfZhXGRuTCuj1h24=",
+    "h1:eilzKRmdCnBoXBoDmtPybJlTP4iD6lIdVIUaTqDbv50=",
+    "h1:ekDRVAusmskAYvleAtqEqsmyLEjUi/aYkG4eqLota/Y=",
+    "h1:g8E5f1pOcWhGG2Inx1Jj0tVgZ7vx6lnWZdMZS8pgmFI=",
+    "h1:nUnE7oDaL9qnMu2fj9jWH/JC4bA2kIIiRghZBWh/5oE=",
+    "h1:vRajF4fskuqPjfbkvmYT66D7m+FihSHRQnNLnXGh/T0=",
+    "zh:0ccb216eb0439bfd652063cdf6da938b3a3d480f62e1f8066d1d9db9799857b8",
+    "zh:46d6e899e3a554097ec19f1a87f2f7bad4444b8d60f3b18c8bb025485387522d",
+    "zh:99a11d34787d999f9394c0d8266d2bd2c6dfbf2544bc093afc41187ba565964c",
+    "zh:a4009da7010fd8998020afd9d8a09602d78deec0588eae5d202fc683698c3b92",
+    "zh:c5a0a32f9a761b1e41629511d75a8142c34074c321beb14635d43b7ec3f74d49",
+    "zh:d2e296ffa52e19ea41d0aa5592860364d2a99b07e88b78d235c5b0790b73507e",
+    "zh:eaf06774f1e74f12ffd03aba6b30db3ca7ccfb2d27f9266eb8803cf3fee6d4b1",
   ]
 }
