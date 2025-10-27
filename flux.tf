@@ -6,7 +6,7 @@ resource "tls_private_key" "flux" {
 
 resource "github_repository_deploy_key" "flux" {
   count      = var.flux_enabled ? 1 : 0
-  title      = "flux - ${var.flux_github_branch}"
+  title      = "flux - ${var.namespace}"
   repository = var.flux_github_repo_name
   key        = tls_private_key.flux[0].public_key_openssh
   read_only  = true
@@ -14,9 +14,9 @@ resource "github_repository_deploy_key" "flux" {
 
 resource "flux_bootstrap_git" "flux" {
   count      = var.flux_enabled ? 1 : 0
-  depends_on = [github_repository_deploy_key.flux[0]]
+  depends_on = [github_repository_deploy_key.flux[0], data.talos_cluster_health.this]
 
-  path       = var.flux_github_target_path
+  path = var.flux_github_target_path
 }
 
 # Flux values configmap
@@ -57,13 +57,13 @@ resource "kubernetes_secret" "flux_core_secrets" {
     name      = "flux-secrets"
     namespace = flux_bootstrap_git.flux[0].namespace
   }
-  
+
   // data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => (v == local.GENERATED_SECRET_STRING ? random_password.generated_secrets[k].result : v) }
   data = jsondecode(data.jq_query.flux_core_secrets[0].result)
 }
 
 resource "kubectl_manifest" "flux_core_gitrepository" {
-  count    = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
+  count = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
   yaml_body = templatefile(
     "${path.module}/flux_gitrepository.tftpl",
     {
@@ -72,11 +72,11 @@ resource "kubectl_manifest" "flux_core_gitrepository" {
       interval  = "1m"
       url       = var.flux_core_repository
       branch    = var.flux_core_branch
-    })
+  })
 }
 
 resource "kubectl_manifest" "flux_core_kustomization" {
-  count    = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
+  count = (var.flux_enabled && var.flux_core_repository != null) ? 1 : 0
   yaml_body = templatefile(
     "${path.module}/flux_kustomization.tftpl",
     {
@@ -87,8 +87,8 @@ resource "kubectl_manifest" "flux_core_kustomization" {
         kind = "GitRepository"
         name = "flux-core"
       }
-      path      = var.flux_core_path
-      prune     = true
-      timeout   = "5m"
-    })
+      path    = var.flux_core_path
+      prune   = true
+      timeout = "5m"
+  })
 }

@@ -1,53 +1,59 @@
+locals {
+  talos_schematic = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
+}
+
 resource "proxmox_virtual_environment_pool" "namespace_pool" {
   pool_id = format("k8s.%s", var.namespace)
 }
 
-module "controllers" {
-  #checkov:skip=CKV_TF_1
-  #checkov:skip=CKV_TF_2
-  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=main"
+resource "proxmox_virtual_environment_download_file" "talos_nocloud_image" {
+  for_each = {
+    for node in var.nodes : node => node
+  }
+  content_type = "import"
+  datastore_id = "local"
+  node_name    = each.key
 
-  count     = length(var.kubernetes_controller_ips)
-  node      = var.nodes[count.index % length(var.nodes)]
-  namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
+  file_name = "talos-${var.namespace}-${var.kubernetes_talos_version}-nocloud-amd64.qcow2"
+  url       = "https://factory.talos.dev/image/${local.talos_schematic}/v${var.kubernetes_talos_version}/nocloud-amd64.qcow2"
+}
 
-  vm_name            = format("%s-controller-%02d", var.namespace, count.index + 1)
-  vm_description     = format("%s controller %d", var.namespace, count.index + 1)
-  vm_disk_class      = var.vm_disk_class
-  vm_cpu_cores       = var.kubernetes_controller_cpu_cores
-  vm_cpu_sockets     = var.kubernetes_controller_cpu_sockets
-  vm_memory          = var.kubernetes_controller_memory
-  vm_disk_size       = var.kubernetes_controller_disk_size
-  vm_network_address = var.kubernetes_controller_ips[count.index]
-  vm_user            = var.vm_user
-  vm_user_privatekey = var.vm_user_privatekey
+module "controlplanes" {
+  source = "./modules/talos-node"
 
-  puppet_git_repo = var.puppet_git_repo
-  puppet_git_ref  = var.puppet_git_ref
-  puppet_role     = "kubernetes::controller"
+  count = length(var.kubernetes_controller_ips)
+
+  node_name      = format("controlplane-%02d.%s.lab", count.index + 1, proxmox_virtual_environment_pool.namespace_pool.pool_id)
+  node_role      = "controlplane"
+  node_namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
+  proxmox_node   = var.nodes[count.index % length(var.nodes)]
+
+  cpu_cores     = var.kubernetes_controller_cpu_cores
+  cpu_sockets   = var.kubernetes_controller_cpu_sockets
+  memory_mb     = var.kubernetes_controller_memory
+  disk_image_id = proxmox_virtual_environment_download_file.talos_nocloud_image[var.nodes[count.index % length(var.nodes)]].id
+  disk_size_gb  = var.kubernetes_controller_disk_size
+  storage_pool  = var.vm_disk_class
+
+  ip_address = var.kubernetes_controller_ips[count.index]
 }
 
 module "workers" {
-  #checkov:skip=CKV_TF_1
-  #checkov:skip=CKV_TF_2
-  source = "github.com/pixil98/homelab-tfmod-vm.git?ref=main"
+  source = "./modules/talos-node"
 
-  count     = length(var.kubernetes_worker_ips)
-  node      = var.nodes[count.index % length(var.nodes)]
-  namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
+  count = length(var.kubernetes_worker_ips)
 
-  vm_name            = format("%s-worker-%02d", var.namespace, count.index + 1)
-  vm_description     = format("%s worker %d", var.namespace, count.index + 1)
-  vm_disk_class      = var.vm_disk_class
-  vm_cpu_cores       = var.kubernetes_worker_cpu_cores
-  vm_cpu_sockets     = var.kubernetes_worker_cpu_sockets
-  vm_memory          = var.kubernetes_worker_memory
-  vm_disk_size       = var.kubernetes_worker_disk_size
-  vm_network_address = var.kubernetes_worker_ips[count.index]
-  vm_user            = var.vm_user
-  vm_user_privatekey = var.vm_user_privatekey
+  node_name      = format("worker-%02d.%s.lab", count.index + 1, proxmox_virtual_environment_pool.namespace_pool.pool_id)
+  node_role      = "worker"
+  node_namespace = proxmox_virtual_environment_pool.namespace_pool.pool_id
+  proxmox_node   = var.nodes[count.index % length(var.nodes)]
 
-  puppet_git_repo = var.puppet_git_repo
-  puppet_git_ref  = var.puppet_git_ref
-  puppet_role     = "kubernetes::worker"
+  cpu_cores     = var.kubernetes_worker_cpu_cores
+  cpu_sockets   = var.kubernetes_worker_cpu_sockets
+  memory_mb     = var.kubernetes_worker_memory
+  disk_image_id = proxmox_virtual_environment_download_file.talos_nocloud_image[var.nodes[count.index % length(var.nodes)]].id
+  disk_size_gb  = var.kubernetes_worker_disk_size
+  storage_pool  = var.vm_disk_class
+
+  ip_address = var.kubernetes_worker_ips[count.index]
 }
