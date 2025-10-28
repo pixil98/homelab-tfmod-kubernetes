@@ -3,7 +3,7 @@ terraform {
   required_providers {
     flux = {
       source  = "fluxcd/flux"
-      version = "1.7.3"
+      version = "1.7.4"
     }
     github = {
       source  = "integrations/github"
