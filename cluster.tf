@@ -9,9 +9,34 @@ locals {
       cluster = {
         apiServer = {
           extraArgs = {
-            etcd-servers   = "https://127.0.0.1:2379"
             feature-gates  = "MutatingAdmissionPolicy=true"
             runtime-config = "admissionregistration.k8s.io/v1beta1=true"
+          }
+        }
+      }
+      machine = {
+        registries = {
+          mirrors = {
+            "docker.io" = {
+              endpoints = ["https://registry.lab.reisman.org/v2/proxy.docker.io"]
+              overridePath = true
+            }
+            "gcr.io" = {
+              endpoints = ["https://registry.lab.reisman.org/v2/proxy.gcr.io"]
+              overridePath = true
+            }
+            "ghcr.io" = {
+              endpoints = ["https://registry.lab.reisman.org/v2/proxy.ghcr.io"]
+              overridePath = true
+            }
+            "quay.io" = {
+              endpoints = ["https://registry.lab.reisman.org/v2/proxy.quay.io"]
+              overridePath = true
+            }
+            "registry.k8s.io" = {
+              endpoints = ["https://registry.lab.reisman.org/v2/proxy.registry.k8s.io"]
+              overridePath = true
+            }
           }
         }
       }
