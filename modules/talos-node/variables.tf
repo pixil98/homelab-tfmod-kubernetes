@@ -80,7 +80,7 @@ variable "disk_size_gb" {
 variable "cpu_type" {
   description = "CPU type for the node"
   type        = string
-  default     = "x86-64-v2-AES"
+  default     = "x86-64-v3"
 }
 
 # Storage Configuration
