@@ -33,9 +33,9 @@ terraform {
       source  = "hashicorp/random"
       version = "3.7.2"
     }
-    rke = {
-      source  = "rancher/rke"
-      version = "1.7.5"
+    talos = {
+      source  = "siderolabs/talos"
+      version = "0.9.0"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -44,19 +44,25 @@ terraform {
   }
 }
 
+provider "proxmox" {
+  endpoint = var.proxmox_endpoint
+  username = var.proxmox_user
+  password = var.proxmox_password
+}
+
 provider "flux" {
   kubernetes = {
-    host                   = rke_cluster.cluster.api_server_url
-    client_certificate     = rke_cluster.cluster.client_cert
-    client_key             = rke_cluster.cluster.client_key
-    cluster_ca_certificate = rke_cluster.cluster.ca_crt
+    host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+    client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
   }
   git = {
-    url    = "ssh://git@github.com/${var.flux_github_repo_owner}/${var.flux_github_repo_name}.git"
-    branch = var.flux_github_branch
-    ssh = {
-      username    = "git"
-      private_key = var.vm_user_privatekey
+    url    = "https://git@github.com/${var.flux_github_repo_owner}/${var.flux_github_repo_name}.git"
+    branch = var.namespace
+    http = {
+      username = "git"
+      password = var.flux_github_token
     }
   }
 }
@@ -66,23 +72,17 @@ provider "github" {
   token = var.flux_github_token
 }
 
-provider "kubectl" {
-  host                   = rke_cluster.cluster.api_server_url
-  client_certificate     = rke_cluster.cluster.client_cert
-  client_key             = rke_cluster.cluster.client_key
-  cluster_ca_certificate = rke_cluster.cluster.ca_crt
-  load_config_file       = false
-}
-
 provider "kubernetes" {
-  host                   = rke_cluster.cluster.api_server_url
-  client_certificate     = rke_cluster.cluster.client_cert
-  client_key             = rke_cluster.cluster.client_key
-  cluster_ca_certificate = rke_cluster.cluster.ca_crt
+  host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+  client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
+  client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
+  cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
 }
 
-provider "proxmox" {
-  endpoint = var.proxmox_endpoint
-  username = var.proxmox_user
-  password = var.proxmox_password
+provider "kubectl" {
+  host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+  client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
+  client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
+  cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
+  load_config_file       = false
 }
