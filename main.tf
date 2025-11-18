@@ -7,7 +7,7 @@ terraform {
     }
     github = {
       source  = "integrations/github"
-      version = "6.7.1"
+      version = "6.8.3"
     }
     jq = {
       source  = "massdriver-cloud/jq"
