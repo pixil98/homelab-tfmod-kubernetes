@@ -18,23 +18,23 @@ locals {
         registries = {
           mirrors = {
             "docker.io" = {
-              endpoints = ["https://registry.lab.reisman.org/v2/proxy.docker.io"]
+              endpoints    = ["https://registry.lab.reisman.org/v2/proxy.docker.io"]
               overridePath = true
             }
             "gcr.io" = {
-              endpoints = ["https://registry.lab.reisman.org/v2/proxy.gcr.io"]
+              endpoints    = ["https://registry.lab.reisman.org/v2/proxy.gcr.io"]
               overridePath = true
             }
             "ghcr.io" = {
-              endpoints = ["https://registry.lab.reisman.org/v2/proxy.ghcr.io"]
+              endpoints    = ["https://registry.lab.reisman.org/v2/proxy.ghcr.io"]
               overridePath = true
             }
             "quay.io" = {
-              endpoints = ["https://registry.lab.reisman.org/v2/proxy.quay.io"]
+              endpoints    = ["https://registry.lab.reisman.org/v2/proxy.quay.io"]
               overridePath = true
             }
             "registry.k8s.io" = {
-              endpoints = ["https://registry.lab.reisman.org/v2/proxy.registry.k8s.io"]
+              endpoints    = ["https://registry.lab.reisman.org/v2/proxy.registry.k8s.io"]
               overridePath = true
             }
           }
