@@ -23,7 +23,7 @@ terraform {
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.6.1"
+      version = "2.6.2"
     }
     proxmox = {
       source  = "bpg/proxmox"
