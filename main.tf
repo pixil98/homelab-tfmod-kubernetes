@@ -35,7 +35,7 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.9.0"
+      version = "0.10.1"
     }
     tls = {
       source  = "hashicorp/tls"
