@@ -1,5 +1,12 @@
 locals {
   talos_schematic = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
+  talos_version   = element(data.talos_image_factory_versions.this.talos_versions, length(data.talos_image_factory_versions.this.talos_versions) - 1)
+}
+
+data "talos_image_factory_versions" "this" {
+  filters = {
+    stable_versions_only = true
+  }
 }
 
 resource "proxmox_virtual_environment_pool" "namespace_pool" {
@@ -14,8 +21,8 @@ resource "proxmox_virtual_environment_download_file" "talos_nocloud_image" {
   datastore_id = "local"
   node_name    = each.key
 
-  file_name = "talos-${var.namespace}-${var.kubernetes_talos_version}-nocloud-amd64.qcow2"
-  url       = "https://factory.talos.dev/image/${local.talos_schematic}/v${var.kubernetes_talos_version}/nocloud-amd64.qcow2"
+  file_name = "talos-${var.namespace}-${local.talos_version}-nocloud-amd64.qcow2"
+  url       = "https://factory.talos.dev/image/${local.talos_schematic}/${local.talos_version}/nocloud-amd64.qcow2"
 }
 
 module "controlplanes" {

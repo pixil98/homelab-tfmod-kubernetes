@@ -44,12 +44,6 @@ variable "vm_disk_class" {
 #---------------------------------------------------------------------------------------------------
 # Kubernetes
 #---------------------------------------------------------------------------------------------------
-variable "kubernetes_talos_version" {
-  description = "Version of Talos to use"
-  type        = string
-  default     = "1.11.3"
-}
-
 variable "kubernetes_controller_ips" {
   description = "IP addresses for controllers to use"
   type        = list(string)
