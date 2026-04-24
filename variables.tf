@@ -102,6 +102,12 @@ variable "kubernetes_worker_disk_size" {
   default     = 30
 }
 
+variable "kubernetes_worker_data_disk_size" {
+  description = "Size of additional data disk in gigabytes for worker nodes (null = no data disk)"
+  type        = number
+  default     = null
+}
+
 #---------------------------------------------------------------------------------------------------
 # Flux
 #---------------------------------------------------------------------------------------------------

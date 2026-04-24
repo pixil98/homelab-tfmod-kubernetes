@@ -89,6 +89,12 @@ variable "storage_pool" {
   type        = string
 }
 
+variable "data_disk_size_gb" {
+  description = "Size of additional data disk in GB (null = no data disk)"
+  type        = number
+  default     = null
+}
+
 # Network Configuration
 variable "ip_address" {
   description = "Static IP address for the node"

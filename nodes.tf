@@ -59,8 +59,9 @@ module "workers" {
   cpu_sockets   = var.kubernetes_worker_cpu_sockets
   memory_mb     = var.kubernetes_worker_memory
   disk_image_id = proxmox_virtual_environment_download_file.talos_nocloud_image[var.nodes[count.index % length(var.nodes)]].id
-  disk_size_gb  = var.kubernetes_worker_disk_size
-  storage_pool  = var.vm_disk_class
+  disk_size_gb      = var.kubernetes_worker_disk_size
+  data_disk_size_gb = var.kubernetes_worker_data_disk_size
+  storage_pool      = var.vm_disk_class
 
   ip_address = var.kubernetes_worker_ips[count.index]
 }

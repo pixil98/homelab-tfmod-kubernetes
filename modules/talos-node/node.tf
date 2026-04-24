@@ -27,6 +27,16 @@ resource "proxmox_virtual_environment_vm" "talos_node" {
     size         = var.disk_size_gb
   }
 
+  dynamic "disk" {
+    for_each = var.data_disk_size_gb != null ? [1] : []
+    content {
+      datastore_id = var.storage_pool
+      interface    = "scsi1"
+      size         = var.data_disk_size_gb
+      file_format  = "raw"
+    }
+  }
+
   network_device {
     bridge = "vmbr0"
   }

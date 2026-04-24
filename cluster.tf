@@ -4,7 +4,7 @@ locals {
   worker_ips       = sort([for w in module.workers : w.ip_address])
   cluster_endpoint = "https://${local.controlplane_ips[0]}:6443"
 
-  config_patches = [
+  base_config_patches = [
     yamlencode({
       cluster = {
         apiServer = {
@@ -42,6 +42,21 @@ locals {
       }
     })
   ]
+
+  worker_config_patches = concat(local.base_config_patches,
+    var.kubernetes_worker_data_disk_size != null ? [
+      yamlencode({
+        machine = {
+          disks = [{
+            device = "/dev/sdb"
+            partitions = [{
+              mountpoint = "/var/mnt/local-storage"
+            }]
+          }]
+        }
+      })
+    ] : []
+  )
 }
 
 resource "talos_machine_secrets" "this" {}
@@ -52,7 +67,7 @@ data "talos_machine_configuration" "controlplane" {
   machine_type     = "controlplane"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
-  config_patches = local.config_patches
+  config_patches = local.base_config_patches
 }
 
 data "talos_machine_configuration" "worker" {
@@ -61,7 +76,7 @@ data "talos_machine_configuration" "worker" {
   machine_type     = "worker"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
-  config_patches = local.config_patches
+  config_patches = local.worker_config_patches
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
