@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_vm" "talos_node" {
   name      = var.node_name
-  tags      = ["k8s", "controller", var.node_namespace]
+  tags      = ["k8s", var.node_role, var.node_namespace]
   pool_id   = var.node_namespace
   node_name = var.proxmox_node
 
