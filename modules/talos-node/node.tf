@@ -49,7 +49,6 @@ resource "proxmox_virtual_environment_vm" "talos_node" {
     }
   }
 
-  # Descriptive notes for Proxmox GUI (markdown format)
   description = <<-EOT
 # Homelab ${title(var.node_namespace)} - ${title(var.node_role)} Node
 

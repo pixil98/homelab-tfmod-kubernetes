@@ -1,3 +1,7 @@
+locals {
+  jq_flatten_with_prefix = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"%s_\" + .)"
+}
+
 resource "tls_private_key" "flux" {
   count       = var.flux_enabled ? 1 : 0
   algorithm   = "ECDSA"
@@ -19,14 +23,13 @@ resource "flux_bootstrap_git" "flux" {
   path = var.flux_github_target_path
 }
 
-# Flux values configmap
 data "jq_query" "flux_core_values" {
   count = var.flux_enabled ? 1 : 0
   data  = var.flux_values_json
-  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"vals_\" + .)"
+  query = format(local.jq_flatten_with_prefix, "vals")
 }
 
-resource "kubernetes_config_map" "flux_core_values" {
+resource "kubernetes_config_map_v1" "flux_core_values" {
   count = var.flux_enabled ? 1 : 0
   metadata {
     name      = "flux-values"
@@ -36,29 +39,19 @@ resource "kubernetes_config_map" "flux_core_values" {
   data = jsondecode(data.jq_query.flux_core_values[0].result)
 }
 
-# Flux secrets configmap
 data "jq_query" "flux_core_secrets" {
   count = var.flux_enabled ? 1 : 0
   data  = var.flux_secrets_json
-  query = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"secrets_\" + .)"
+  query = format(local.jq_flatten_with_prefix, "secrets")
 }
 
-// locals {
-//   GENERATED_SECRET_STRING = "<generated>"
-// }
-// resource "random_password" "generated_secrets" {
-//   for_each = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => v if v == local.GENERATED_SECRET_STRING }
-//   length  = 50
-//   special = false
-// }
-resource "kubernetes_secret" "flux_core_secrets" {
+resource "kubernetes_secret_v1" "flux_core_secrets" {
   count = var.flux_enabled ? 1 : 0
   metadata {
     name      = "flux-secrets"
     namespace = flux_bootstrap_git.flux[0].namespace
   }
 
-  // data = { for k, v in jsondecode(data.jq_query.flux_secrets[0].result): k => (v == local.GENERATED_SECRET_STRING ? random_password.generated_secrets[k].result : v) }
   data = jsondecode(data.jq_query.flux_core_secrets[0].result)
 }
 

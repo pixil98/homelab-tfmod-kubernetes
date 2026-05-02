@@ -44,6 +44,15 @@ terraform {
   }
 }
 
+locals {
+  kube_client_config = {
+    host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+    client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
+  }
+}
+
 provider "proxmox" {
   endpoint = var.proxmox_endpoint
   username = var.proxmox_user
@@ -51,12 +60,7 @@ provider "proxmox" {
 }
 
 provider "flux" {
-  kubernetes = {
-    host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
-    client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
-    client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
-    cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
-  }
+  kubernetes = local.kube_client_config
   git = {
     url    = "https://git@github.com/${var.flux_github_repo_owner}/${var.flux_github_repo_name}.git"
     branch = var.namespace
@@ -73,16 +77,16 @@ provider "github" {
 }
 
 provider "kubernetes" {
-  host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
-  client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
-  client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
-  cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
+  host                   = local.kube_client_config.host
+  client_certificate     = local.kube_client_config.client_certificate
+  client_key             = local.kube_client_config.client_key
+  cluster_ca_certificate = local.kube_client_config.cluster_ca_certificate
 }
 
 provider "kubectl" {
-  host                   = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
-  client_certificate     = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
-  client_key             = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
-  cluster_ca_certificate = base64decode(talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
+  host                   = local.kube_client_config.host
+  client_certificate     = local.kube_client_config.client_certificate
+  client_key             = local.kube_client_config.client_key
+  cluster_ca_certificate = local.kube_client_config.cluster_ca_certificate
   load_config_file       = false
 }

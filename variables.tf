@@ -69,7 +69,7 @@ variable "kubernetes_controller_memory" {
 
 variable "kubernetes_controller_disk_size" {
   description = "Size of disk in gigabytes to allocate per controller"
-  type        = string
+  type        = number
   default     = 20
 }
 

@@ -1,7 +1,3 @@
-# Talos Node Module Variables
-# Configuration for creating Talos Linux Kubernetes nodes
-
-# Basic Node Configuration
 variable "node_name" {
   description = "Base name for the Talos node"
   type        = string
@@ -27,7 +23,6 @@ variable "proxmox_node" {
   type        = string
 }
 
-# Hardware Configuration
 variable "cpu_cores" {
   description = "Number of CPU cores for the node"
   type        = number
@@ -83,13 +78,11 @@ variable "cpu_type" {
   default     = "x86-64-v3"
 }
 
-# Storage Configuration
 variable "storage_pool" {
   description = "Storage pool for VM disks"
   type        = string
 }
 
-# Network Configuration
 variable "ip_address" {
   description = "Static IP address for the node"
   type        = string
