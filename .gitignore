@@ -5,6 +5,9 @@
 *.tfstate
 *.tfstate.*
 
+# Generated cluster credentials
+/kubeconfig
+
 # Crash log files
 crash.log
 crash.*.log

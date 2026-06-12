@@ -266,6 +266,7 @@ provider "registry.terraform.io/massdriver-cloud/jq" {
   version     = "0.2.1"
   constraints = "0.2.1"
   hashes = [
+    "h1:0ZqgiRZqDVY8MNQhmYp12tOYyVpQUffintiPv/88DCI=",
     "h1:U/bEhZgZXx8/Tdj+YeEH7Rz2cVvSAtg84RipLRKL/Qs=",
     "h1:fGK6RtNue0mJvjmJH/dsreb8nqxbjbGykX6md83gW6U=",
     "zh:108d7fe975047fbbf3fff83ae16aec46847236a069ea846e7ee4df7185198a0f",

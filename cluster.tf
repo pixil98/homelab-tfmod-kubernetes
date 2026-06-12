@@ -15,6 +15,12 @@ locals {
         }
       }
       machine = {
+        kubelet = {
+          extraConfig = {
+            containerLogMaxSize  = var.kubernetes_container_log_max_size
+            containerLogMaxFiles = var.kubernetes_container_log_max_files
+          }
+        }
         registries = {
           mirrors = {
             "docker.io" = {

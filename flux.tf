@@ -1,5 +1,5 @@
 locals {
-  jq_flatten_with_prefix = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): getpath($p)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"%s_\" + .)"
+  jq_flatten_with_prefix = "[paths(scalars|true) as $p | {([$p[]] | join(\"_\")): (getpath($p) | tostring)}] | reduce .[] as $item ({}; . * $item) | with_entries(.key |= \"%s_\" + .)"
 }
 
 resource "tls_private_key" "flux" {

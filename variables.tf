@@ -4,11 +4,21 @@
 variable "nodes" {
   description = "Array of nodes to host the cluster"
   type        = list(string)
+
+  validation {
+    condition     = length(var.nodes) > 0
+    error_message = "At least one Proxmox node is required."
+  }
 }
 
 variable "namespace" {
   description = "Namespace to which the cluster belongs"
   type        = string
+
+  validation {
+    condition     = length(trimspace(var.namespace)) > 0
+    error_message = "Namespace must not be empty."
+  }
 }
 
 #---------------------------------------------------------------------------------------------------
@@ -47,6 +57,11 @@ variable "vm_disk_class" {
 variable "kubernetes_controller_ips" {
   description = "IP addresses for controllers to use"
   type        = list(string)
+
+  validation {
+    condition     = length(var.kubernetes_controller_ips) > 0
+    error_message = "At least one Kubernetes controller IP is required."
+  }
 }
 
 variable "kubernetes_controller_cpu_cores" {
@@ -100,6 +115,23 @@ variable "kubernetes_worker_disk_size" {
   description = "Size of disk in gigabytes to allocate per worker"
   type        = number
   default     = 30
+}
+
+variable "kubernetes_container_log_max_size" {
+  description = "Maximum size for each container log file before kubelet rotates it"
+  type        = string
+  default     = "10Mi"
+}
+
+variable "kubernetes_container_log_max_files" {
+  description = "Maximum number of rotated log files kubelet retains per container"
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.kubernetes_container_log_max_files >= 1
+    error_message = "Container log max files must be at least 1."
+  }
 }
 
 #---------------------------------------------------------------------------------------------------
