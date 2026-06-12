@@ -96,9 +96,23 @@ resource "talos_cluster_kubeconfig" "this" {
   node                 = local.controlplane_ips[0]
 }
 
+data "talos_client_configuration" "this" {
+  cluster_name         = local.cluster_name
+  client_configuration = talos_machine_secrets.this.client_configuration
+  endpoints            = local.controlplane_ips
+  nodes                = concat(local.controlplane_ips, local.worker_ips)
+}
+
 resource "local_sensitive_file" "kubeconfig" {
   filename             = "${path.root}/kubeconfig"
   content              = talos_cluster_kubeconfig.this.kubeconfig_raw
+  directory_permission = "0700"
+  file_permission      = "0600"
+}
+
+resource "local_sensitive_file" "talosconfig" {
+  filename             = "${path.root}/talosconfig"
+  content              = data.talos_client_configuration.this.talos_config
   directory_permission = "0700"
   file_permission      = "0600"
 }
