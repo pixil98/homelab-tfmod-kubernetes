@@ -14,6 +14,7 @@ locals {
   gateway_load_balancer_ip_variable   = "$${vals_infra_envoyGateway_loadBalancerIP}"
   gateway_private_key_rotation_policy = "Always"
   gateway_route_manifest_name         = "routing.yaml"
+  gateway_routing_namespace           = "infrastructure-routing"
   gateway_system_ca_name              = "System"
   gateway_tls_mode                    = "Terminate"
 
@@ -21,7 +22,6 @@ locals {
   gateway_domain      = try(trimspace(local.gateway_flux_values.info.cluster.domain), "")
   gateway_backend_ip  = try(trimspace(local.gateway_flux_values.infra.ingress.ipAddress), "")
   gateway_name        = var.namespace
-  gateway_namespace   = "routing-${var.namespace}"
   gateway_tls_secret  = "${var.namespace}-tls"
 
   gateway_route_kustomization = templatefile(
@@ -46,7 +46,7 @@ locals {
       listener_https_wildcard     = local.gateway_listener_https_wildcard
       load_balancer_ip_variable   = local.gateway_load_balancer_ip_variable
       private_key_rotation_policy = local.gateway_private_key_rotation_policy
-      routing_namespace           = local.gateway_namespace
+      routing_namespace           = local.gateway_routing_namespace
       system_ca_name              = local.gateway_system_ca_name
       tls_mode                    = local.gateway_tls_mode
       tls_secret                  = local.gateway_tls_secret

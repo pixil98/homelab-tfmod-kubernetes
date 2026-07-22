@@ -25,6 +25,10 @@ The module commits the cluster-owned route resources and Flux registration to
 the branch selected by `infrastructure_gateway_repository_branch`, which
 defaults to `infrastructure`.
 
+The infrastructure deployment must own the shared `infrastructure-routing`
+namespace. Generated registrations place their resources in that namespace but
+do not create or manage the namespace themselves.
+
 The registration uses TLS both at the infrastructure gateway and from Envoy to
 the destination cluster. The base domain is used as the backend SNI and is
 validated against the backend certificate using system certificate authorities.
