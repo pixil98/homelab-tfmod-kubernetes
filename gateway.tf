@@ -1,7 +1,7 @@
 locals {
   gateway_backend_port                = 443
   gateway_cert_manager_kustomization  = "flux-core-routing-cert-manager-config"
-  gateway_class_name                  = "infrastructure-routing"
+  gateway_class_name                  = "routing"
   gateway_cluster_issuer_name         = "letsencrypt-production-cloudflare"
   gateway_envoy_config_kustomization  = "infrastructure-envoy-config"
   gateway_flux_config_name            = "flux-values"
@@ -14,7 +14,7 @@ locals {
   gateway_load_balancer_ip_variable   = "$${vals_infra_envoyGateway_loadBalancerIP}"
   gateway_private_key_rotation_policy = "Always"
   gateway_route_manifest_name         = "routing.yaml"
-  gateway_routing_namespace           = "infrastructure-routing"
+  gateway_routing_namespace           = "routing"
   gateway_system_ca_name              = "System"
   gateway_tls_mode                    = "Terminate"
 
