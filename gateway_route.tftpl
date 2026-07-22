@@ -103,6 +103,7 @@ spec:
         - group: gateway.envoyproxy.io
           kind: Backend
           name: ${gateway_name}
+          port: ${backend_port}
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: BackendTLSPolicy

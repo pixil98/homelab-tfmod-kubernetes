@@ -36,5 +36,5 @@ and routes without requesting an address of their own.
 The registration uses TLS both at the infrastructure gateway and from Envoy to
 the destination cluster. The base domain is used as the backend SNI and is
 validated against the backend certificate using system certificate authorities.
-The backend TLS policy targets the Envoy `Backend` port by its numeric section
-name.
+The generated route selects the Envoy `Backend` port explicitly, and the backend
+TLS policy targets the same port by its numeric section name.
