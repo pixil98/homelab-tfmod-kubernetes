@@ -11,7 +11,6 @@ locals {
   gateway_listener_http_wildcard      = "http-wildcard"
   gateway_listener_https_apex         = "https-apex"
   gateway_listener_https_wildcard     = "https-wildcard"
-  gateway_load_balancer_ip_variable   = "$${vals_infra_envoyGateway_loadBalancerIP}"
   gateway_private_key_rotation_policy = "Always"
   gateway_route_manifest_name         = "routing.yaml"
   gateway_routing_namespace           = "routing"
@@ -44,7 +43,6 @@ locals {
       listener_http_wildcard      = local.gateway_listener_http_wildcard
       listener_https_apex         = local.gateway_listener_https_apex
       listener_https_wildcard     = local.gateway_listener_https_wildcard
-      load_balancer_ip_variable   = local.gateway_load_balancer_ip_variable
       private_key_rotation_policy = local.gateway_private_key_rotation_policy
       routing_namespace           = local.gateway_routing_namespace
       system_ca_name              = local.gateway_system_ca_name

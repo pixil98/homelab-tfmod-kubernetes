@@ -29,6 +29,11 @@ The infrastructure deployment must own the shared `routing`
 namespace. Generated registrations place their resources in that namespace but
 do not create or manage the namespace themselves.
 
+The infrastructure deployment also owns the shared Envoy service and its
+stable load-balancer address. Generated `Gateway` resources declare listeners
+and routes without requesting an address of their own.
+
 The registration uses TLS both at the infrastructure gateway and from Envoy to
 the destination cluster. The base domain is used as the backend SNI and is
 validated against the backend certificate using system certificate authorities.
+The backend TLS policy targets the entire Envoy `Backend` resource.

@@ -21,9 +21,6 @@ metadata:
   name: ${gateway_name}
   namespace: ${routing_namespace}
 spec:
-  addresses:
-    - type: IPAddress
-      value: "${load_balancer_ip_variable}"
   gatewayClassName: ${gateway_class_name}
   listeners:
     - hostname: ${domain}
@@ -117,7 +114,6 @@ spec:
     - group: gateway.envoyproxy.io
       kind: Backend
       name: ${gateway_name}
-      sectionName: "${backend_port}"
   validation:
     hostname: ${domain}
     wellKnownCACertificates: ${system_ca_name}
