@@ -1,0 +1,128 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${routing_namespace}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ${gateway_name}
+  namespace: ${routing_namespace}
+spec:
+  dnsNames:
+    - ${domain}
+    - "*.${domain}"
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: ${issuer_name}
+  privateKey:
+    rotationPolicy: ${private_key_rotation_policy}
+  secretName: ${tls_secret}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: ${gateway_name}
+  namespace: ${routing_namespace}
+spec:
+  addresses:
+    - type: IPAddress
+      value: "${load_balancer_ip_variable}"
+  gatewayClassName: ${gateway_class_name}
+  listeners:
+    - hostname: ${domain}
+      name: ${listener_http_apex}
+      port: 80
+      protocol: HTTP
+    - hostname: "*.${domain}"
+      name: ${listener_http_wildcard}
+      port: 80
+      protocol: HTTP
+    - hostname: ${domain}
+      name: ${listener_https_apex}
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: ${tls_secret}
+        mode: ${tls_mode}
+    - hostname: "*.${domain}"
+      name: ${listener_https_wildcard}
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: ${tls_secret}
+        mode: ${tls_mode}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: ${gateway_name}
+  namespace: ${routing_namespace}
+spec:
+  endpoints:
+    - ip:
+        address: ${backend_ip}
+        port: ${backend_port}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ${gateway_name}-http-redirect
+  namespace: ${routing_namespace}
+spec:
+  hostnames:
+    - ${domain}
+    - "*.${domain}"
+  parentRefs:
+    - name: ${gateway_name}
+      sectionName: ${listener_http_apex}
+    - name: ${gateway_name}
+      sectionName: ${listener_http_wildcard}
+  rules:
+    - filters:
+        - requestRedirect:
+            scheme: https
+            statusCode: 301
+          type: RequestRedirect
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ${gateway_name}-https
+  namespace: ${routing_namespace}
+spec:
+  hostnames:
+    - ${domain}
+    - "*.${domain}"
+  parentRefs:
+    - name: ${gateway_name}
+      sectionName: ${listener_https_apex}
+    - name: ${gateway_name}
+      sectionName: ${listener_https_wildcard}
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: ${gateway_name}
+---
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: BackendTLSPolicy
+metadata:
+  name: ${gateway_name}
+  namespace: ${routing_namespace}
+spec:
+  targetRefs:
+    - group: gateway.envoyproxy.io
+      kind: Backend
+      name: ${gateway_name}
+      sectionName: "${backend_port}"
+  validation:
+    hostname: ${domain}
+    wellKnownCACertificates: ${system_ca_name}

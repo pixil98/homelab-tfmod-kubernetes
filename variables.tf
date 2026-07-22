@@ -198,3 +198,20 @@ variable "flux_secrets_json" {
   default     = "{}"
   sensitive   = true
 }
+
+variable "infrastructure_gateway_registration_enabled" {
+  description = "Whether to register this cluster's domain and ingress endpoint with the infrastructure gateway"
+  type        = bool
+  default     = false
+}
+
+variable "infrastructure_gateway_repository_branch" {
+  description = "Branch in the Flux GitHub repository that owns infrastructure gateway registrations"
+  type        = string
+  default     = "infrastructure"
+
+  validation {
+    condition     = length(trimspace(var.infrastructure_gateway_repository_branch)) > 0
+    error_message = "Infrastructure gateway repository branch must not be empty."
+  }
+}

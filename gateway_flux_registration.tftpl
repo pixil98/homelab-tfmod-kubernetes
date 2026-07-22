@@ -1,0 +1,24 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: route-${gateway_name}
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: ${envoy_kustomization}
+    - name: ${cert_manager_kustomization}
+  interval: 10m
+  path: ./routes/${gateway_name}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${flux_config_name}
+      - kind: Secret
+        name: ${flux_secret_name}
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: ${flux_source_name}
+  timeout: 15m
+  wait: true
