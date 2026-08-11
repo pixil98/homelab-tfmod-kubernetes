@@ -38,3 +38,11 @@ the destination cluster. The base domain is used as the backend SNI and is
 validated against the backend certificate using system certificate authorities.
 The generated route selects the Envoy `Backend` port explicitly, and the backend
 TLS policy targets the same port by its numeric section name.
+
+The generated HTTPS route disables the Gateway API request timeout. Envoy
+otherwise applies a 15 second timeout covering the whole request-response
+transaction, which truncates large uploads and long-lived media streams even
+while they are actively transferring. A destination cluster ingress typically
+bounds idle time instead of total duration, so the registration would otherwise
+impose a limit the cluster did not have before it was fronted by the gateway.
+Envoy's stream idle timeout is unaffected and still closes stalled connections.

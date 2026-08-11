@@ -12,6 +12,7 @@ locals {
   gateway_listener_https_apex         = "https-apex"
   gateway_listener_https_wildcard     = "https-wildcard"
   gateway_private_key_rotation_policy = "Always"
+  gateway_request_timeout             = "0s"
   gateway_route_manifest_name         = "routing.yaml"
   gateway_routing_namespace           = "routing"
   gateway_system_ca_name              = "System"
@@ -44,6 +45,7 @@ locals {
       listener_https_apex         = local.gateway_listener_https_apex
       listener_https_wildcard     = local.gateway_listener_https_wildcard
       private_key_rotation_policy = local.gateway_private_key_rotation_policy
+      request_timeout             = local.gateway_request_timeout
       routing_namespace           = local.gateway_routing_namespace
       system_ca_name              = local.gateway_system_ca_name
       tls_mode                    = local.gateway_tls_mode
