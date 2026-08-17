@@ -1,4 +1,7 @@
 locals {
+  gateway_backend_app_protocols = [
+    "gateway.envoyproxy.io/wss",
+  ]
   gateway_backend_port                = 443
   gateway_cert_manager_kustomization  = "flux-core-routing-cert-manager-config"
   gateway_class_name                  = "routing"
@@ -12,6 +15,7 @@ locals {
   gateway_listener_https_apex         = "https-apex"
   gateway_listener_https_wildcard     = "https-wildcard"
   gateway_private_key_rotation_policy = "Always"
+  gateway_request_timeout             = "0s"
   gateway_route_manifest_name         = "routing.yaml"
   gateway_routing_namespace           = "routing"
   gateway_system_ca_name              = "System"
@@ -33,6 +37,7 @@ locals {
   gateway_route_content = templatefile(
     "${path.module}/gateway_route.tftpl",
     {
+      backend_app_protocols       = local.gateway_backend_app_protocols
       backend_ip                  = local.gateway_backend_ip
       backend_port                = local.gateway_backend_port
       domain                      = local.gateway_domain
@@ -44,6 +49,7 @@ locals {
       listener_https_apex         = local.gateway_listener_https_apex
       listener_https_wildcard     = local.gateway_listener_https_wildcard
       private_key_rotation_policy = local.gateway_private_key_rotation_policy
+      request_timeout             = local.gateway_request_timeout
       routing_namespace           = local.gateway_routing_namespace
       system_ca_name              = local.gateway_system_ca_name
       tls_mode                    = local.gateway_tls_mode

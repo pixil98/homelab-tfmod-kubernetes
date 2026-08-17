@@ -58,6 +58,10 @@ metadata:
   name: ${gateway_name}
   namespace: ${routing_namespace}
 spec:
+  appProtocols:
+%{ for app_protocol in backend_app_protocols ~}
+    - ${app_protocol}
+%{ endfor ~}
   endpoints:
     - ip:
         address: ${backend_ip}
@@ -104,6 +108,11 @@ spec:
           kind: Backend
           name: ${gateway_name}
           port: ${backend_port}
+      # This catch-all route fronts streaming and other long-running services.
+      # Disable Envoy's 15s total request timeout; its stream idle timeout still
+      # terminates stalled streams.
+      timeouts:
+        request: "${request_timeout}"
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: BackendTLSPolicy

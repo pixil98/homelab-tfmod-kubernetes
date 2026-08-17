@@ -36,5 +36,12 @@ and routes without requesting an address of their own.
 The registration uses TLS both at the infrastructure gateway and from Envoy to
 the destination cluster. The base domain is used as the backend SNI and is
 validated against the backend certificate using system certificate authorities.
-The generated route selects the Envoy `Backend` port explicitly, and the backend
-TLS policy targets the same port by its numeric section name.
+The backend declares the `gateway.envoyproxy.io/wss` application protocol so
+Envoy uses HTTP/1.1 for the upstream TLS connection, allowing WebSocket upgrades
+to reach the destination ingress. The generated route selects the Envoy
+`Backend` port explicitly, and the backend TLS policy targets the same port by
+its numeric section name.
+
+The generated catch-all route sets its request timeout to `0s`. This disables
+Envoy's 15-second total request timeout for streaming and other long-running
+services while retaining Envoy's stream idle timeout for stalled connections.
